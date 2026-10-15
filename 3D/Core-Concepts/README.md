@@ -1,20 +1,22 @@
 # 3D: Core Concepts
 
-For vector operations, coordinate conversion, quaternion rotation, and time-step concepts, see [Transforms and Essential Math](./Transforms-and-Math.md).
+Guides for spaces, common APIs, vector math, architecture, time, events, and asynchronous work.
+
+## Guides
+- [Transforms and essential math](./Transforms-and-Math.md)
+- [Common Unity APIs](./Common-Unity-APIs.md)
+- [Vector math reference](./Vector-Math-Reference.md)
+- [Math and Quaternion recipes](./Math-and-Quaternion-Recipes.md)
+- [Coroutines, events, and async](./Coroutines-Events-and-Async.md)
+- [Game architecture and scene flow](../Gameplay/Game-Architecture-and-Scene-Flow.md)
 
 ## Coordinate spaces
-Unity commonly uses X/Z for ground-plane movement and Y for vertical height, though a project can choose other conventions. Transform.position is world space; localPosition is relative to the parent. Parent rotation and scale affect child world transforms.
+Unity commonly uses X/Z for ground-plane movement and Y for vertical height, though projects may choose other conventions. Transform.position is world space; localPosition is parent-relative. Parent rotation and scale affect child world transforms.
 
-## Geometry and rendering
-- **Mesh:** vertices, triangles, normals, UVs, and related geometry data.
-- **MeshFilter:** supplies mesh geometry to a MeshRenderer.
-- **MeshRenderer:** renders a mesh with assigned materials.
-- **Material:** stores shader and property values.
-- **Prefab:** reusable GameObject setup with overrides on scene instances.
-- **Perspective camera:** applies perspective; distant objects appear smaller.
-- **Orthographic camera:** does not apply perspective scaling.
+## Geometry and rendering terms
+Mesh data contains vertices, triangles, normals, UVs, and related information. MeshFilter supplies geometry to a MeshRenderer. Material references a shader and property values. Perspective cameras apply perspective; orthographic cameras do not scale apparent size with depth.
 
 ## Common mistakes
-Mixing local and world coordinates causes placement bugs. Parent scaling can affect child dimensions and complicate physics. A MeshRenderer alone does not supply geometry.
+Mixing local/world coordinates, parent scale side effects, using Lerp for constant speed, calling LookRotation with a zero direction, and assuming MonoBehaviour properties are serialized automatically.
 
-Reference: [Transform API](https://docs.unity3d.com/ScriptReference/Transform.html) · [Mesh API](https://docs.unity3d.com/ScriptReference/Mesh.html)
+References: [Transform API](https://docs.unity3d.com/ScriptReference/Transform.html) · [Mesh API](https://docs.unity3d.com/ScriptReference/Mesh.html)

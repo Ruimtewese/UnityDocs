@@ -1,28 +1,23 @@
 # 2D: Movement
 
-Movement patterns differ between platformers and top-down games. Separate input collection from movement so controls can later be replaced by AI or replay input.
+Choose a movement authority and keep it consistent. Separate input collection from movement so controls can later be replaced by AI, replay, or touch input.
 
-## Detailed guides
-- [Platformer Controller — complete setup and code](./Platformer-Controller.md)
-- [Top-Down Movement — complete setup and code](./Top-Down-Movement.md)
+## Guides
+- [Platformer Controller](./Platformer-Controller.md)
+- [Top-Down Movement](./Top-Down-Movement.md)
+- [Moving Platforms](./Moving-Platforms.md)
+- [Ground checks and LayerMasks](../Physics/Ground-Checks-and-Layer-Masks.md)
 
 ## Platformer checklist
-- Horizontal acceleration and deceleration.
-- Ground detection using a small overlap or cast and a LayerMask.
-- Jump input, jump buffering, and coyote time if desired.
-- Variable jump height, terminal fall speed, and moving-platform behaviour.
-- Separate facing direction from physics velocity when needed.
+Horizontal acceleration/deceleration, a small ground overlap/cast, jump buffering/coyote time where desired, variable jump height, terminal fall speed, and moving-platform behavior. Keep sprite facing separate from physics velocity when appropriate.
 
 ## Top-down checklist
-- Read a Vector2 movement input.
-- Normalize when diagonal movement should not be faster.
-- Apply movement through the chosen controller consistently.
-- Decide whether the character rotates toward movement or flips a sprite.
+Read Vector2 input, normalize if diagonal movement should not be faster, and choose whether the character rotates or flips. Use a consistent body/physics approach.
 
 ## Physics timing
-For Dynamic Rigidbody2D movement, use Rigidbody2D velocity/forces or other supported Rigidbody2D APIs with physics-step timing. For kinematic movement, understand MovePosition and its collision limitations. Do not mix arbitrary Transform movement and Rigidbody control without a deliberate reason.
+For Dynamic Rigidbody2D movement, use Rigidbody2D APIs with physics-step timing. For kinematic movement, understand MovePosition behavior and collision limits. Do not mix arbitrary Transform movement and Rigidbody control without a deliberate design.
 
 ## Debugging
-Draw or inspect the ground probe, verify its LayerMask, check the collider shape, and log the input/grounded state. A single-frame collision flag is often a fragile substitute for a ground check.
+Draw the ground probe, verify LayerMasks and collider geometry, and log input/grounded state. A single-frame collision flag can be a fragile substitute for a ground check.
 
 Reference: [Rigidbody2D API](https://docs.unity3d.com/ScriptReference/Rigidbody2D.html)

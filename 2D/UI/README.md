@@ -1,16 +1,16 @@
 # 2D: UI
 
-## Canvas modes
-- **Screen Space - Overlay:** UI renders over the scene without a camera reference.
-- **Screen Space - Camera:** UI is rendered using a selected camera.
-- **World Space:** UI exists as a scene object in world coordinates.
+The guides here use Unity's built-in uGUI system unless stated otherwise. uGUI uses Canvas, RectTransform, Graphic, EventSystem, and UI components.
 
-Use anchors and layout components to support different resolutions. Buttons should call a focused controller or UI method; avoid placing all game logic inside UI callbacks.
+## Guides
+- [Health bar and HUD](./Health-Bar-and-HUD.md)
+- [Buttons, menus, and pause](./Buttons-Menus-and-Pause.md)
 
-## Useful components
-Canvas, CanvasScaler, GraphicRaycaster, EventSystem, Button, Image, TextMeshPro text, Slider, Toggle, CanvasGroup, LayoutGroup, and ContentSizeFitter.
+## Layout basics
+Use Canvas Scaler with Scale With Screen Size for scalable screen UI. Use RectTransform anchors and layout groups rather than fixing all positions to absolute pixels. Import TextMeshPro essentials if prompted.
 
-## Troubleshooting
-If clicks fail, check EventSystem/Input System UI module, raycast targets, canvas mode, and whether another UI element intercepts the pointer. Keep UI as a display/control layer rather than the source of truth for gameplay state.
+## Input troubleshooting
+Verify an active EventSystem and the input module that matches the chosen input backend. Buttons may be blocked by overlapping raycast targets, disabled CanvasGroup settings, or missing On Click listeners. A world-space Canvas has different scale and rendering concerns from a screen-space Canvas.
 
-Reference: [Unity UI manual](https://docs.unity3d.com/Manual/UISystem.html)
+## Accessibility and test
+Test multiple aspect ratios, support readable contrast and meaningful labels, and do not rely on color alone to communicate state.

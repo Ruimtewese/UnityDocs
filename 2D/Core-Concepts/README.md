@@ -1,29 +1,20 @@
 # 2D: Core Concepts
 
-Understand the 2D coordinate plane, sprites, pixels per unit, sorting, orthographic projection, and asset import.
+Guides for coordinate spaces, sprite sizing, lifecycle, data, C#, timing, and object reuse.
 
-For worked examples of screen/world conversion and pixel sizing, see [Coordinate Spaces and PPU](./Coordinate-Spaces-and-PPU.md).
+## Guides
+- [Coordinate spaces and Pixels Per Unit](./Coordinate-Spaces-and-PPU.md)
+- [C# essentials for Unity](./CSharp-For-Unity.md)
+- [Script lifecycle and architecture](./Script-Lifecycle-and-Architecture.md)
+- [Prefabs, ScriptableObjects, and data](./Prefabs-ScriptableObjects-and-Data.md)
+- [Time, coroutines, and Invoke](./Time-Coroutines-and-Invoke.md)
 
-## Coordinates and camera
-- X/Y usually describe gameplay movement; Z can affect depth and sorting configuration.
-- Orthographic Size is half the vertical view span in world units; full vertical span is twice that value.
-- Screen pixels and world units are different spaces. Convert screen positions through the active camera when necessary.
+## Key rules
+X/Y commonly describe the gameplay plane, while Z can affect depth/sorting. Orthographic Size is half the vertical view height. Screen pixels and world units are different spaces. PPU is the number of source pixels represented by one world unit. Sorting layers control draw order, not physics collisions.
 
-## Sprites and import settings
-- **Texture Type:** Sprite (2D and UI) for sprite assets.
-- **Sprite Mode:** Single for one sprite, Multiple for a sheet that will be sliced.
-- **Pixels Per Unit:** number of source pixels represented by one world unit.
-- **Filter Mode:** Point for crisp pixel art; Bilinear/Trilinear for smoothing appropriate textures.
-- **Compression:** reduces memory at possible visual cost; check the target platform.
-- **Pivot:** controls the sprite's local origin and can affect rotation and placement.
-
-## Draw order
-Sorting Layer establishes a broad draw group; Order in Layer orders renderers within it. Transparency sorting settings and Z can also matter depending on project configuration.
+Keep runtime state separate from shared authored data. Use one clear owner for each value such as health, movement, pause state, or audio volume.
 
 ## Common mistakes
-- Inconsistent PPU makes assets appear at mismatched sizes.
-- Fractional camera positions can make pixel art shimmer.
-- Z position is not a universal replacement for sorting layers.
-- Sprite import changes may need Apply or reimporting to take effect.
+Inconsistent PPU makes assets look mismatched; fractional camera positions can blur pixel art; local/world coordinates get confused; Transform and Rigidbody scripts fight; dictionaries and ordinary properties do not automatically serialize using Unity's default serializer.
 
-See also: [SpriteRenderer API](https://docs.unity3d.com/ScriptReference/SpriteRenderer.html) · [Camera API](https://docs.unity3d.com/ScriptReference/Camera.html)
+References: [Transform API](https://docs.unity3d.com/ScriptReference/Transform.html) · [Unity Manual](https://docs.unity3d.com/Manual/index.html)
