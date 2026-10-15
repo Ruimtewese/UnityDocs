@@ -74,19 +74,19 @@ public sealed class PlatformerController2D : MonoBehaviour
         grounded = groundCheck != null &&
             Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayers);
 
-        if (grounded && jumpQueued)
-        {
-            Vector2 velocity = body.linearVelocity;
-            velocity.y = jumpVelocity;
-            body.linearVelocity = velocity;
-            jumpQueued = false;
-        }
     }
 
     private void FixedUpdate()
     {
         Vector2 velocity = body.linearVelocity;
         velocity.x = horizontal * moveSpeed;
+
+        if (grounded && jumpQueued)
+        {
+            velocity.y = jumpVelocity;
+            jumpQueued = false;
+        }
+
         body.linearVelocity = velocity;
     }
 
