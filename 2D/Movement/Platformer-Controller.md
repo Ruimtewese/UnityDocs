@@ -1,132 +1,134 @@
 # 2D Platformer Controller — Complete Setup
 
-This example is a starting point for a simple platformer using the **Input System** package and a **Dynamic Rigidbody2D**. It is intentionally small; add coyote time, jump buffering, slopes, ladders, and moving-platform support as separate features.
+This controller uses the Input System package and a Dynamic Rigidbody2D. It includes horizontal movement, ground checking, jump buffering, and coyote time. It is a foundation; slopes, ladders, wall jumps, variable jump height, and moving platform carry are separate features.
 
 ## Scene setup
-
-1. Create a Player GameObject with a SpriteRenderer.
-2. Add **Rigidbody2D**: Body Type = Dynamic; Freeze Rotation Z = enabled; Collision Detection = Continuous if fast motion warrants it; Interpolate = Interpolate if movement looks jittery.
-3. Add a **CapsuleCollider2D** or **BoxCollider2D**, sized to the character.
-4. Create a Ground layer and assign it to level colliders.
-5. Create a child empty object named `GroundCheck`, positioned just below the feet.
-6. Install/enable the Input System package. Create an Input Actions asset with a Gameplay map: Move (Value / Vector2) bound to WASD and arrow keys, and Jump (Button) bound to Space.
-7. Assign the asset and actions in the Inspector.
+1. Create a Player with SpriteRenderer, Rigidbody2D, and a CapsuleCollider2D or BoxCollider2D.
+2. Set Rigidbody2D Body Type to Dynamic and Freeze Rotation Z.
+3. Choose Interpolate if rendered motion looks jittery; choose collision detection based on speed.
+4. Create a Ground layer and assign it to solid ground colliders.
+5. Add a child Transform called GroundCheck, positioned just below the player's feet.
+6. Install Input System and create a Gameplay map with Move (Value / Vector2) and Jump (Button).
+7. Assign the actions to the script. The groundLayers mask must include ground and exclude the player layer.
 
 ## Script: PlatformerController2D.cs
 
-```csharp
-using UnityEngine;
-using UnityEngine.InputSystem;
+    using UnityEngine;
+    using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Rigidbody2D))]
-public sealed class PlatformerController2D : MonoBehaviour
-{
-    [Header("Movement")]
-    [SerializeField, Min(0f)] private float moveSpeed = 7f;
-    [SerializeField, Min(0f)] private float jumpVelocity = 13f;
-
-    [Header("Ground check")]
-    [SerializeField] private Transform groundCheck;
-    [SerializeField, Min(0.01f)] private float groundRadius = 0.12f;
-    [SerializeField] private LayerMask groundLayers;
-
-    [Header("Input actions")]
-    [SerializeField] private InputActionReference moveAction;
-    [SerializeField] private InputActionReference jumpAction;
-
-    private Rigidbody2D body;
-    private bool grounded;
-    private bool jumpQueued;
-    private float horizontal;
-
-    private void Awake()
+    [RequireComponent(typeof(Rigidbody2D))]
+    public sealed class PlatformerController2D : MonoBehaviour
     {
-        body = GetComponent<Rigidbody2D>();
-    }
+        [Header("Movement")]
+        [SerializeField, Min(0f)] private float moveSpeed = 7f;
+        [SerializeField, Min(0f)] private float jumpVelocity = 13f;
 
-    private void OnEnable()
-    {
-        if (moveAction != null) moveAction.action.Enable();
-        if (jumpAction != null)
+        [Header("Ground check")]
+        [SerializeField] private Transform groundCheck;
+        [SerializeField, Min(0.01f)] private float groundRadius = 0.12f;
+        [SerializeField] private LayerMask groundLayers;
+
+        [Header("Jump forgiveness")]
+        [SerializeField, Min(0f)] private float jumpBufferTime = 0.12f;
+        [SerializeField, Min(0f)] private float coyoteTime = 0.1f;
+
+        [Header("Input actions")]
+        [SerializeField] private InputActionReference moveAction;
+        [SerializeField] private InputActionReference jumpAction;
+
+        private Rigidbody2D body;
+        private float horizontal;
+        private float jumpBufferRemaining;
+        private float coyoteRemaining;
+        private bool grounded;
+
+        private void Awake()
         {
-            jumpAction.action.Enable();
-            jumpAction.action.performed += OnJump;
+            body = GetComponent<Rigidbody2D>();
+        }
+
+        private void OnEnable()
+        {
+            if (moveAction != null) moveAction.action.Enable();
+
+            if (jumpAction != null)
+            {
+                jumpAction.action.performed += OnJump;
+                jumpAction.action.Enable();
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (jumpAction != null)
+            {
+                jumpAction.action.performed -= OnJump;
+                jumpAction.action.Disable();
+            }
+
+            if (moveAction != null) moveAction.action.Disable();
+        }
+
+        private void Update()
+        {
+            horizontal = moveAction != null
+                ? moveAction.action.ReadValue<Vector2>().x
+                : 0f;
+        }
+
+        private void FixedUpdate()
+        {
+            grounded = groundCheck != null &&
+                Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayers) != null;
+
+            if (grounded)
+                coyoteRemaining = coyoteTime;
+            else
+                coyoteRemaining = Mathf.Max(0f, coyoteRemaining - Time.fixedDeltaTime);
+
+            Vector2 velocity = body.linearVelocity;
+            velocity.x = horizontal * moveSpeed;
+
+            if (jumpBufferRemaining > 0f && coyoteRemaining > 0f)
+            {
+                velocity.y = jumpVelocity;
+                jumpBufferRemaining = 0f;
+                coyoteRemaining = 0f;
+            }
+            else
+            {
+                jumpBufferRemaining = Mathf.Max(
+                    0f, jumpBufferRemaining - Time.fixedDeltaTime);
+            }
+
+            body.linearVelocity = velocity;
+        }
+
+        private void OnJump(InputAction.CallbackContext context)
+        {
+            jumpBufferRemaining = jumpBufferTime;
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            if (groundCheck == null) return;
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(groundCheck.position, groundRadius);
         }
     }
 
-    private void OnDisable()
-    {
-        if (jumpAction != null)
-        {
-            jumpAction.action.performed -= OnJump;
-            jumpAction.action.Disable();
-        }
+## How it works
+- Update reads movement input; FixedUpdate checks ground and writes Rigidbody2D velocity.
+- Jump callback starts a short buffer timer so a press just before landing can trigger.
+- Ground contact refreshes coyote time; leaving an edge doesn't instantly remove jump eligibility.
+- When both timers overlap, the controller applies jump velocity and consumes both timers.
 
-        if (moveAction != null) moveAction.action.Disable();
-    }
+## Important details
+InputActionReference actions are enabled/disabled by this component. Avoid having multiple components independently enable/disable the same shared action. Jump buffer/coyote timers use fixed-step countdowns. This sample replaces horizontal velocity directly, so it does not implement acceleration or friction-based deceleration.
 
-    private void Update()
-    {
-        horizontal = moveAction != null
-            ? moveAction.action.ReadValue<Vector2>().x
-            : 0f;
-
-        grounded = groundCheck != null &&
-            Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayers);
-
-    }
-
-    private void FixedUpdate()
-    {
-        Vector2 velocity = body.linearVelocity;
-        velocity.x = horizontal * moveSpeed;
-
-        if (grounded && jumpQueued)
-        {
-            velocity.y = jumpVelocity;
-            jumpQueued = false;
-        }
-
-        body.linearVelocity = velocity;
-    }
-
-    private void OnJump(InputAction.CallbackContext context)
-    {
-        jumpQueued = true;
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        if (groundCheck == null) return;
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(groundCheck.position, groundRadius);
-    }
-}
-```
-
-> API note: recent Unity versions expose Rigidbody2D's linearVelocity through the documented Rigidbody2D API; check the API for the exact Unity version in your project if a member name differs.
-
-## Inspector checklist
-- Move Action points to the Move action, not the whole action map.
-- Jump Action points to Jump.
-- Ground Check is below the feet, not inside the body.
-- Ground Layers includes only surfaces that should count as ground.
-- Rigidbody2D rotation is frozen so the character does not tip over.
-- The Input System package and active input handling are configured for the project.
-
-## Why the code is structured this way
-- `Update` reads input and checks the ground state.
-- `FixedUpdate` applies horizontal physics movement.
-- Jump is queued so a button press can be consumed by the physics loop.
-- `OnDisable` unsubscribes callbacks to avoid duplicate subscriptions.
-- The Gizmo makes the ground probe visible in the Scene view.
-
-## Common problems
-- **Never grounded:** move GroundCheck lower, enlarge its radius slightly, verify Ground Layers and the Physics 2D collision setup.
-- **Jump does nothing:** inspect the Jump binding and Console; ensure the action is enabled.
-- **Character rotates:** freeze Rigidbody2D rotation Z.
-- **Jitter:** avoid also moving the Transform directly; try Rigidbody2D interpolation.
-- **Old Unity API mismatch:** consult the version-specific [Rigidbody2D API](https://docs.unity3d.com/ScriptReference/Rigidbody2D.html).
-
-## Next improvements
-Add jump buffering (remember a recent jump press), coyote time (allow a short grace period after leaving a ledge), variable jump height, acceleration/deceleration, and one-way platforms. Implement each feature independently and test edge cases.
+## Troubleshooting
+- Never grounded: move GroundCheck just below feet and verify groundLayers.
+- Jump not detected: check action binding, action type, reference assignment, and active input map.
+- Diagonal movement irrelevant for platformer horizontal axis; only Move.x is used.
+- Player tips: freeze Rigidbody2D rotation Z.
+- Fast player tunnels through thin platforms: inspect continuous collision detection and timestep.

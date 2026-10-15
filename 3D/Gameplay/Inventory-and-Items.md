@@ -1,6 +1,6 @@
 # 3D Inventory and Item Definitions
 
-Separate shared item definition data from each player's runtime inventory count. ScriptableObjects are useful for authored definitions; a runtime inventory is ordinary mutable state.
+Separate shared authored item definitions from each player's runtime inventory. ScriptableObjects are useful for definitions; inventory counts are mutable runtime state.
 
 ## Item definition
 Save as ItemDefinition.cs.
@@ -17,10 +17,10 @@ Save as ItemDefinition.cs.
         [Min(1)] public int maxStack = 99;
     }
 
-Create definitions through Assets → Create → Game → Item Definition. Keep itemId unique and stable if inventory data will be saved.
+Create definitions through the Project window's Create menu. Keep itemId unique and stable if inventory data will be saved.
 
 ## Runtime inventory
-This minimal version supports a count per item definition; it does not yet support slots, weight, equipment, or serialization.
+This minimal example supports one count per item definition; it does not implement slots, weight, equipment, or serialization. Add returns the number of items accepted so callers can keep any overflow.
 
     using System.Collections.Generic;
     using UnityEngine;
@@ -34,12 +34,13 @@ This minimal version supports a count per item definition; it does not yet suppo
             return item != null && counts.TryGetValue(item, out int count) ? count : 0;
         }
 
-        public bool Add(ItemDefinition item, int amount)
+        public int Add(ItemDefinition item, int amount)
         {
-            if (item == null || amount <= 0) return false;
-            int newCount = GetCount(item) + amount;
-            counts[item] = Mathf.Min(newCount, item.maxStack);
-            return true;
+            if (item == null || amount <= 0) return 0;
+            int current = GetCount(item);
+            int accepted = Mathf.Min(amount, Mathf.Max(0, item.maxStack - current));
+            if (accepted > 0) counts[item] = current + accepted;
+            return accepted;
         }
 
         public bool Remove(ItemDefinition item, int amount)
@@ -52,10 +53,10 @@ This minimal version supports a count per item definition; it does not yet suppo
         }
     }
 
-The Add method caps at maxStack but doesn't report any overflow; a full inventory system should return the quantity accepted and leave overflow in the world. Dictionaries are not directly serialized by JsonUtility; save a serializable list of item IDs/counts and resolve IDs to definitions on load.
+If Add returns less than requested amount, keep or drop the overflow according to game rules. Dictionaries are not directly serialized by JsonUtility; save a serializable list of item IDs/counts and resolve IDs to definitions during load.
 
 ## Common mistakes
-- Item IDs change and old save data no longer resolves.
-- ScriptableObject asset is mutated as if it were player-owned state.
-- Inventory UI is treated as the source of truth.
-- Add silently loses overflow when stacks are full.
+- Item IDs change, so existing saves no longer resolve.
+- ScriptableObject assets are mutated as player-owned state.
+- Inventory UI becomes the source of truth instead of displaying inventory data.
+- Overflow is silently discarded.
