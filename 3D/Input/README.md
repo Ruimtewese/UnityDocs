@@ -1,19 +1,18 @@
 # 3D: Input
 
-The Input System package is useful for action maps, rebinding, controller support, and UI integration. Legacy input can still be relevant to existing projects.
+## Guide
+- [Input System setup](./Input-System-Setup.md)
 
-## Suggested actions
-- Move — Vector2
-- Look — Vector2
-- Jump, Sprint, Interact, Pause — Buttons
-- Fire/Primary Action — Button, if applicable to the game
+## Setup
+Install Input System, create a Gameplay action map, add Move (Vector2), Look (Vector2), and action buttons such as Jump/Interact/Fire. Assign the input asset to PlayerInput and select the default map and callback behavior.
 
-## Good architecture
-Keep input reading separate from movement and camera logic. Use separate action maps for gameplay and menus when useful. Mouse delta and gamepad stick input have different sensitivity and smoothing needs.
+## Separate input from control
+The input reader reports intent. The movement controller converts it into world movement; camera logic consumes look input; interaction/weapon logic consumes button presses. This separation makes AI, replay, and rebinding easier.
 
-For aiming or selecting world objects, create a ray from the active camera and use an explicit layer mask. For pointer UI, use the configured UI input module instead of treating every click as a world ray.
+## Mouse versus stick
+Mouse delta is a displacement per frame. A gamepad stick is a direction/rate and often needs deltaTime scaling. Use separate sensitivities and clamp the stick as appropriate.
 
 ## Common mistakes
-Screen coordinates are not world positions. Disabled controllers should not leave callbacks subscribed. Centralized actions are easier to rebind than scattered raw key checks.
+Action map is disabled, callback name mismatch, unassigned Input Actions asset, old and new input APIs conflict, or cursor focus is not restored for menus.
 
-Reference: [Input System manual](https://docs.unity3d.com/Packages/com.unity.inputsystem@latest)
+Official docs: https://docs.unity3d.com/Packages/com.unity.inputsystem@latest

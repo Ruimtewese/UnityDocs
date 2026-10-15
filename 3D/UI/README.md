@@ -1,19 +1,16 @@
 # 3D: UI
 
+## Guides
+- [HUD and world-space UI](./HUD-and-World-Space-UI.md)
+- [Settings menu and audio volume](./Settings-Menu-and-Audio-Volume.md)
+
 ## Canvas modes
-- **Screen Space - Overlay:** UI draws over the scene.
-- **Screen Space - Camera:** UI is rendered by a chosen camera.
-- **World Space:** Canvas is placed in the scene and behaves like a world object.
+- Screen Space - Overlay: simple screen HUD.
+- Screen Space - Camera: UI rendered relative to a camera.
+- World Space: UI positioned in the 3D world, such as nameplates or health bars.
 
-Use anchors and layout groups for responsive menus. World-space UI needs deliberate scale, facing, sorting, and camera-distance choices.
+## Layout and input
+Use anchors, Canvas Scaler, and layout groups to support different resolutions. Ensure the EventSystem uses a compatible input module. World-space interaction may require Graphic Raycaster; raycast targets and CanvasGroup settings can block input.
 
-## Useful components
-Canvas, CanvasScaler, GraphicRaycaster, EventSystem, Button, Image, TextMeshPro, Slider, Toggle, CanvasGroup, and layout components.
-
-## World interaction
-Use raycasts or explicit interaction interfaces for selecting objects. Keep UI pointer handling distinct from gameplay rays. UI should display game state rather than become the authority for it.
-
-## Debugging
-Check the active EventSystem/input module, raycast targets, Canvas mode, sorting, and whether another element blocks the pointer.
-
-Reference: [Unity UI manual](https://docs.unity3d.com/Manual/UISystem.html)
+## Settings
+Use an AudioMixer for grouped volume controls, expose a mixer parameter, and convert a linear slider value to decibels. Persist user settings separately from secret/security data.
