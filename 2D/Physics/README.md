@@ -6,8 +6,9 @@
 - [Ground checks and LayerMasks](./Ground-Checks-and-Layer-Masks.md)
 - [One-way platforms](./One-Way-Platforms.md)
 - [Physics materials and friction](./Physics-Materials-and-Friction.md)
-- [Projectile and damage sample](./Projectile-and-Damage.md)
-- [Melee and area hitboxes](./Melee-and-Area-Hitboxes.md)
+- [Joints and rope mechanics](./Joints-and-Rope-Mechanics.md)
+- [Projectiles and damage](./Projectile-and-Damage.md)
+- [Melee/area hitboxes](./Melee-and-Area-Hitboxes.md)
 
 ## Body types
 - Dynamic: participates in force/gravity simulation and collision response.
@@ -15,9 +16,9 @@
 - Static: represents geometry that does not move under simulation.
 
 ## Callbacks and queries
-Solid contact callbacks: OnCollisionEnter2D, OnCollisionStay2D, OnCollisionExit2D. Trigger callbacks: OnTriggerEnter2D, OnTriggerStay2D, OnTriggerExit2D. Queries include Raycast, CircleCast, BoxCast, and overlap methods.
+Solid contact callbacks include OnCollisionEnter2D, OnCollisionStay2D, and OnCollisionExit2D. Trigger callbacks include OnTriggerEnter2D, OnTriggerStay2D, and OnTriggerExit2D. Queries include Raycast, CircleCast, BoxCast, and overlap methods.
 
-Physics Material 2D controls friction and bounciness. The Physics 2D Layer Collision Matrix decides which layers interact. Use LayerMasks so ground checks and targeting ignore irrelevant objects.
+Physics Material 2D controls friction and bounciness. The Physics 2D Layer Collision Matrix decides which layers interact. Use LayerMasks to filter irrelevant objects.
 
 ## Troubleshooting
-Confirm colliders are enabled and overlapping as expected, check trigger/Rigidbody configuration, verify layer settings, and use exact callback signatures. Use physics-step timing for physics-driven movement. [Physics2D API](https://docs.unity3d.com/ScriptReference/Physics2D.html)
+Confirm colliders are enabled and overlapping as expected, check trigger/Rigidbody setup, verify layer settings, and use exact callback signatures. Use physics-step timing for physics-driven movement. [Physics2D API](https://docs.unity3d.com/ScriptReference/Physics2D.html)

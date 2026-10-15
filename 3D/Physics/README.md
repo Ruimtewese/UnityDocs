@@ -3,14 +3,15 @@
 ## Guides
 - [Collision, layers, and Rigidbody](./Collision-Layers-and-Rigidbody.md)
 - [Raycast interaction](./Raycast-Interaction.md)
-- [Raycast, SphereCast, and overlap queries](./Raycast-Spherecast-Overlap-Reference.md)
+- [Raycast/SphereCast/overlap reference](./Raycast-Spherecast-Overlap-Reference.md)
 - [Rigidbody forces and movement](./Forces-and-Rigidbody-Movement.md)
-- [Projectile and hitscan weapons](./Projectile-and-Hitscan-Weapons.md)
+- [Joints and constraints](./Joints-and-Constraints.md)
+- [In-game physics query examples](./Projectile-and-Hitscan-Weapons.md)
 
 ## Core concepts
-Dynamic Rigidbody objects respond to forces and collision response. Kinematic bodies are controlled by code. Static colliders describe non-moving level geometry. Use appropriate shapes and avoid unnecessarily complex MeshColliders.
+Dynamic Rigidbody objects respond to forces and collisions. Kinematic bodies are controlled by code. Static colliders describe non-moving level geometry. Use appropriate shapes and avoid unnecessarily complex MeshColliders.
 
-Collisions use OnCollisionEnter/Stay/Exit; triggers use OnTriggerEnter/Stay/Exit. Queries include Raycast, SphereCast, CapsuleCast, BoxCast, and overlap methods. Physic Material controls friction/bounciness.
+Collisions use OnCollisionEnter/Stay/Exit; triggers use OnTriggerEnter/Stay/Exit. Queries include Raycast, SphereCast, CapsuleCast, BoxCast, and overlap methods. Physic Material controls friction and bounciness.
 
 ## Reliable query checklist
 Choose origin, direction, maximum distance, LayerMask, and trigger behavior. Exclude the player's own layer when needed. Visualize rays/casts in the Scene view.
