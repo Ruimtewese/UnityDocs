@@ -1,17 +1,16 @@
 # 3D: Animation
 
-For parameter setup, transition settings, and a script example, see [Animator Parameters and Transitions](./Animator-Parameters-and-Transitions.md).
+## Guides
+- [Animator parameters and transitions](./Animator-Parameters-and-Transitions.md)
+- [Blend Trees and locomotion](./Blend-Trees-and-Locomotion.md)
+- [Animation Events](./Animation-Events.md)
+- [Root motion versus code-driven movement](./Root-Motion-vs-Code-Movement.md)
 
-## Animator Controller
-States reference clips or blend trees; transitions define when to move between them. Common parameters include Speed, Grounded, Direction, and triggers for one-shot actions.
+## Workflow
+Import and configure the rig/Avatar, create clips, make an Animator Controller, add typed parameters, then connect states and transitions. Keep parameter names and types consistent with scripts. Use a Blend Tree for locomotion blending when it simplifies transitions.
 
-## Blend Trees and root motion
-Blend Trees combine motion based on parameters such as speed and direction. Root motion applies displacement authored in the animation; scripted movement drives the character and lets animation follow. Avoid allowing both systems to control the same movement unintentionally.
+## Root motion
+Decide if animation-authored displacement or controller code owns movement. Avoid both independently moving the same character. Test clip interruption because animation events that close hitboxes may not run if a clip is interrupted.
 
-## Rig import
-Humanoid rigs support retargeting when configured correctly; Generic rigs suit other skeletons. Inspect the model import Rig and Animation tabs when avatars or clips fail.
-
-## Debugging
-Check the Animator component, controller, avatar, parameter spelling/types, transition conditions, exit time, layer weights, and whether the expected state is active. Use animation events carefully; essential game state should not rely solely on a clip event.
-
-Reference: [Animator API](https://docs.unity3d.com/ScriptReference/Animator.html)
+## Troubleshooting
+Check Avatar/rig mapping, clip ranges/Loop Time, Animator Controller assignment, parameter names/types, transition exit time, and whether the animated property is also written by gameplay code.
