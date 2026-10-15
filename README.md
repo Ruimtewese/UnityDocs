@@ -1,51 +1,39 @@
-# UnityDocs — The Practical Unity Reference
+# UnityDocs — Unity 6 C# Reference
 
-A structured, growing reference for building games with Unity. Topics are split into **2D** and **3D** workflows, each organized into focused subfolders.
+A practical, growing reference for 2D and 3D game development in Unity 6. Guides explain concepts, Inspector setup, dependencies, complete examples, common mistakes, and testing.
 
-> **Version note:** Inspector labels, APIs, and packages can differ by Unity version and render pipeline. Verify version-sensitive details against the [Unity Manual](https://docs.unity.com/en-us) and [Scripting API](https://docs.unity3d.com/ScriptReference/).
+**Scope:** Unity is a large engine with changing packages and platform APIs. This handbook aims for broad coverage but cannot guarantee every API or third-party package is documented. Confirm unfamiliar APIs against the official docs for your installed Unity version.
 
 ## Start here
-- [2D Development](./2D/README.md) — sprites, orthographic cameras, Rigidbody2D, Tilemaps, sorting, and 2D animation.
-- [3D Development](./3D/README.md) — meshes, materials, Rigidbody, colliders, character control, lighting, and rendering.
-- [Unity Manual](https://docs.unity.com/en-us)
-- [Unity Scripting API](https://docs.unity3d.com/ScriptReference/)
+- [2D reference](./2D/README.md)
+- [3D reference](./3D/README.md)
+
+## Suggested learning path
+1. Learn GameObjects, Components, Inspector, Scenes, and Prefabs.
+2. Learn C# types, methods, classes, collections, and events.
+3. Study lifecycle, input, movement, and physics.
+4. Add camera, animation, UI, and audio.
+5. Add scene flow, saving, data assets, and AI.
+6. Debug and profile a Development Build on target hardware.
+
+## Reference conventions
+- Baseline: Unity 6; API and package differences may exist across versions.
+- Input System examples require the package and configured actions unless noted.
+- Rigidbody motion belongs in the physics step or a suitable Rigidbody API; avoid conflicting Transform writes.
+- A script is copy-ready only when its required components, dependencies, Inspector references, and input setup are stated.
+- MonoBehaviour class names must match their C# filenames.
+- Unity 6 Rigidbody examples use linearVelocity; older versions may use velocity.
+- Use relative links so pages work on GitHub and local clones.
+
+## Official references
+- [Unity Manual](https://docs.unity3d.com/Manual/index.html)
+- [Scripting API](https://docs.unity3d.com/ScriptReference/)
 - [Unity Learn](https://learn.unity.com/)
+- [Input System manual](https://docs.unity3d.com/Packages/com.unity.inputsystem@latest)
+- [2D features](https://docs.unity3d.com/Manual/Unity2D.html)
+- [Physics](https://docs.unity3d.com/Manual/PhysicsSection.html)
 
-## Structure
-```text
-UnityDocs/
-├── 2D/
-│   ├── Core-Concepts/  Components/  Movement/  Physics/  Input/
-│   ├── Animation/  Cameras/  Tilemaps/  UI/  Audio/
-│   ├── Rendering/  Optimization/  Recipes/
-└── 3D/
-    ├── Core-Concepts/  Components/  Movement/  Physics/  Input/
-    ├── Animation/  Cameras/  Modeling-and-Materials/  UI/  Audio/
-    ├── Lighting-and-Rendering/  Optimization/  Recipes/
-```
-Each topic folder contains a README so GitHub displays the folder and its starting guide.
+## Main topics
+Components and Inspector settings; C# lifecycle and architecture; input; movement and math; physics/collision; sprites, tilemaps, animation; prefabs and ScriptableObjects; camera/rendering; UI/audio; gameplay state; AI; save/load; debugging; performance; and build checks.
 
-## How to use this reference
-1. Read the domain overview, then open the topic that matches your task.
-2. Check the required components, Inspector settings, layers, tags, and packages before using code.
-3. Test examples in a small scene and inspect the Console when something fails.
-4. Profile representative builds before optimizing.
-
-## Core Unity concepts
-- **GameObject:** a scene object that holds components.
-- **Component:** provides data or behaviour; Transform is present on every GameObject.
-- **Transform:** position, rotation, and scale in local or world space.
-- **Prefab:** reusable GameObject setup that can be instantiated.
-- **Scene:** a saved collection of GameObjects and scene settings.
-- **MonoBehaviour:** base class for scripts attached to GameObjects and eligible for Unity lifecycle callbacks.
-- **Package:** optional or separately versioned functionality managed through Package Manager.
-
-## Documentation standards
-Topic guides should explain what a system does, when to use it, key Inspector fields and units, relevant API methods/callbacks, complete examples and setup, common errors, performance implications, and official references. State the tested Unity version and required packages whenever possible.
-
-## Important habits
-- Keep input, game state, physics, presentation, and UI responsibilities understandable.
-- Prefer serialized references over repeated scene-wide searches.
-- Use physics APIs consistently for physics-driven objects.
-- Do not assume a setting's default is identical across every Unity version.
-- Optimize from profiler evidence, not guesswork.
+The handbook is expanded topic by topic. Prefer focused guides with prerequisites, exact setup, complete examples, edge cases, and authoritative links.
