@@ -1,25 +1,21 @@
 # 2D: Physics
 
-## Rigidbody2D body types
-- **Dynamic:** participates in force/gravity simulation and responds to collisions.
-- **Kinematic:** controlled by code and not driven by forces in the same way as Dynamic.
-- **Static:** represents geometry that does not move under simulation.
+## Body types
+- Dynamic: participates in force/gravity simulation and collision response.
+- Kinematic: controlled by code, not driven by forces in the same way as Dynamic.
+- Static: represents geometry that does not move under simulation.
 
-Detailed query examples and layer filtering: [Queries and Collision Matrix](./Queries-and-Collision-Matrix.md).
+## Guides
+- [Queries and collision matrix](./Queries-and-Collision-Matrix.md)
+- [Physics2D query reference](./Physics2D-Query-Reference.md)
+- [Ground checks and LayerMasks](./Ground-Checks-and-Layer-Masks.md)
+- [Projectiles and damage](./Projectile-and-Damage.md)
+- [Melee and area hitboxes](./Melee-and-Area-Hitboxes.md)
 
-## Collision and trigger callbacks
-- Solid contacts: OnCollisionEnter2D, OnCollisionStay2D, OnCollisionExit2D.
-- Trigger overlaps: OnTriggerEnter2D, OnTriggerStay2D, OnTriggerExit2D.
-- Query APIs include Physics2D.Raycast, CircleCast, BoxCast, and OverlapCircle.
+## Callbacks and queries
+Solid contact callbacks: OnCollisionEnter2D, OnCollisionStay2D, OnCollisionExit2D. Trigger callbacks: OnTriggerEnter2D, OnTriggerStay2D, OnTriggerExit2D. Queries include Raycast, CircleCast, BoxCast, and overlap methods.
 
-## Materials and filtering
-Physics Material 2D controls friction and bounciness. The Physics 2D Layer Collision Matrix decides which layers can interact. Use LayerMasks for queries so ground checks and targeting ignore irrelevant objects.
+Physics Material 2D controls friction/bounciness. The Physics 2D Layer Collision Matrix decides which layers interact. Use LayerMasks so ground checks and targeting ignore irrelevant objects.
 
-## Callback troubleshooting
-1. Confirm both colliders are enabled and overlap as expected.
-2. Check trigger flags and Rigidbody2D setup.
-3. Check layer collision settings.
-4. Confirm the GameObjects and scripts are active.
-5. Check that the method name and signature match Unity's callback exactly.
-
-Use physics-step timing for physics-driven movement and avoid teleporting bodies repeatedly through solid geometry. Reference: [Physics2D API](https://docs.unity3d.com/ScriptReference/Physics2D.html)
+## Troubleshooting
+Confirm colliders are enabled, overlap as expected, and have correct trigger/Rigidbody configuration. Check layer settings and exact callback signatures. Use physics-step timing for physics-driven movement. [Physics2D API](https://docs.unity3d.com/ScriptReference/Physics2D.html)
