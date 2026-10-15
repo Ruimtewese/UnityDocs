@@ -1,17 +1,13 @@
 # 3D: Audio
 
-## Positional sound
-AudioSource Spatial Blend controls 2D/3D behaviour. 3D settings can include volume rolloff, minimum/maximum distance, spread, and Doppler level. Position emitters where the sound should originate and keep them attached to moving sources when appropriate.
+## Guide
+- [3D spatial audio](./3D-Spatial-Audio.md)
 
-## AudioMixer routing
-Separate Music, SFX, ambience, and UI into mixer groups when you need independent volume controls or effects. Keep a deliberate AudioListener on the active camera or another suitable object.
+## Spatial setup
+Keep one active AudioListener, normally on the player camera. Set a world-space AudioSource's Spatial Blend toward 1, configure Min/Max Distance and rolloff, and place the source on the object producing the sound.
+
+## Mixing
+Route sources to AudioMixer groups for SFX, music, dialogue, and ambience. Expose mixer parameters for settings controls. Convert linear UI volume to decibels when controlling an exposed mixer volume parameter.
 
 ## Troubleshooting
-- Check AudioListener presence and avoid multiple active listeners.
-- Check source volume, clip, mixer group, mute state, and rolloff distances.
-- Confirm the AudioSource is at the intended world position.
-- Check Play On Awake when spawned objects play duplicate sounds.
-
-Reuse or pool frequent emitters when profiling supports it.
-
-Reference: [AudioSource API](https://docs.unity3d.com/ScriptReference/AudioSource.html)
+If a sound is silent, check clip/source enabled state, Play On Awake/manual Play call, listener, source and mixer volume, spatial distance/rolloff, AudioListener pause, and whether the object has been disabled/destroyed.

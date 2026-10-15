@@ -1,15 +1,18 @@
 # 2D: Audio
 
-## AudioSource settings
-Review Audio Clip, Output, Volume, Pitch, Loop, Play On Awake, Spatial Blend, and Priority. For traditional non-positional 2D sound, Spatial Blend is normally set toward 2D.
+## Guide
+- [Audio setup and sound effects](./Audio-Setup-and-Sound-Effects.md)
 
-## AudioMixer
-Route Music, SFX, and UI audio through separate mixer groups when you need independent volume sliders or effects. Expose mixer parameters for controlled runtime adjustment.
+## AudioSource basics
+- AudioClip: imported audio asset.
+- AudioSource: playback component.
+- AudioListener: usually on the active camera; keep a single active listener.
+- AudioMixer: groups sources and controls volume/effects centrally.
 
-## Good practices
-- Use Play On Awake only when automatic playback is intended.
-- Reuse or pool frequent one-shot emitters if profiling supports it.
-- Keep music, UI feedback, and gameplay sound effects independently adjustable.
-- Check AudioListener presence, mixer mute/volume, and clip import settings when sound is missing.
+For positional 2D effects, Spatial Blend is normally 0. Disable Play On Awake for code-triggered effects. Use PlayOneShot for short overlapping sounds; use looping AudioSources for music/ambience as appropriate.
 
-Reference: [AudioSource API](https://docs.unity3d.com/ScriptReference/AudioSource.html)
+## Import and performance
+Audio import settings trade memory, latency, and CPU use. Choose based on clip duration and target platform. Profile rather than selecting one setting for every sound.
+
+## Troubleshooting
+Check source/listener enabled states, assigned clips, source volume, mixer routing/mute, Spatial Blend, pause state, and platform audio settings.

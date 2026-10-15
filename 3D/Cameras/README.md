@@ -1,16 +1,9 @@
-# 3D: Cameras
+# 3D Camera Index
 
-## Important camera settings
-- **Projection:** Perspective or Orthographic.
-- **Field of View:** vertical viewing angle in common perspective setups.
-- **Clipping Planes:** Near and Far control visible depth range.
-- **Culling Mask:** determines which layers the camera renders.
-- **Depth/priority and viewport settings:** affect camera composition and ordering depending on project setup.
+The canonical camera guides are in the singular Camera folder:
 
-## Follow and orbit cameras
-For a simple rig, separate camera position, look direction, and target. Cinemachine provides reusable follow/look-at rigs, blends, framing, and other camera behaviours through its package. Third-person cameras need obstacle handling so they do not pass through walls.
+- [First-/third-person camera foundation](../Camera/First-and-Third-Person-Camera.md)
+- [Third-person collision and smoothing](../Camera/Camera-Collision-and-Smoothing.md)
+- [Cursor lock and mouse sensitivity](../Input/Cursor-Lock-and-Mouse-Sensitivity.md)
 
-## Common mistakes
-Too-small near clipping distances can worsen depth precision. Excessive smoothing causes lag. Player facing and camera facing are not automatically the same. Test different aspect ratios and control devices.
-
-Reference: [Camera API](https://docs.unity3d.com/ScriptReference/Camera.html)
+Separate character yaw from camera pitch for first-person controls. For third-person cameras, use a target pivot, collision handling, and one coordinated system for follow/smoothing/obstacles.
