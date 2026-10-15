@@ -1,17 +1,10 @@
 # 2D: Recipes
 
-This section is for small, reproducible solutions. Each recipe should include the scene setup, required components, layers/tags, full code, Inspector values, expected result, and troubleshooting.
+Small, focused patterns that can be combined with the main movement/physics/UI guides.
 
-## Recommended recipes
-1. Basic top-down movement.
-2. Platformer movement with ground detection and jump buffering.
-3. Sprite facing/flip based on movement.
-4. Collectible pickup and score update.
-5. Health and damage with invulnerability timing.
-6. Projectile spawn and hit detection.
-7. Checkpoint and respawn.
-8. Camera follow with level bounds.
-9. Tilemap hazard and one-way platform.
-10. Pause menu and scene restart.
+## Guides
+- [Screen bounds and object wrapping](./Screen-Bounds-and-Wrapping.md)
+- [Camera shake](./Screen-Shake.md)
 
-Keep examples focused. Use serialized references, explicit layer masks, and clear separation between input, physics, UI, and game state.
+## General rules
+Use a clear owner for each Transform. Verify camera assumptions before converting between screen and world coordinates. Test recipes with the actual project camera, physics layers, resolution, and hierarchy instead of copying constants blindly.

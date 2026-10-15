@@ -1,16 +1,17 @@
 # 2D: Rendering
 
-## Sorting and materials
-Sorting Layers define broad draw groups; Order in Layer orders renderers within them. Transparency sorting settings and material/shader configuration can also affect draw order and appearance.
+## Guides
+- [Sorting layers and pixel art](./Sorting-Layers-and-Pixel-Art.md)
+- [Parallax background](./Parallax-Background.md)
 
-## URP 2D Renderer
-URP's 2D Renderer can support 2D lights and shadows when the project is configured for it. Sprites need compatible materials/shaders to respond to the chosen lighting setup. Built-in Render Pipeline and URP workflows differ.
+## Sprite rendering
+SpriteRenderer draws a sprite with a selected material and color. Sorting Layer provides broad order; Order in Layer orders renderers within that layer. Z depth and transparency sorting can also matter depending on the camera/project settings.
 
-## Debug checklist
-1. Confirm the active render pipeline and renderer asset.
-2. Inspect SpriteRenderer material and sorting settings.
-3. Check camera culling mask and object layers.
-4. Verify 2D Light settings and target sorting layers.
-5. Test at the actual target resolution.
+## Import and pixels
+Use Sprite (2D and UI) texture type. Choose Single for one sprite or Multiple for sheets. Keep Pixels Per Unit consistent. Point filtering is common for pixel art; Bilinear may suit smooth art. Test filter/compression settings at target resolution.
 
-Reference: [URP documentation](https://docs.unity3d.com/Manual/urp/2DIndex.html)
+## Parallax
+Move distant background layers by a fraction of camera movement. Use camera delta rather than repeatedly adding absolute camera position, and keep each layer's movement owned by one script.
+
+## Common mistakes
+Wrong sorting layer/order, mismatched PPU, inconsistent pivots, fractional camera movement in pixel art, and background Z/order that covers gameplay.
