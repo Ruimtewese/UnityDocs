@@ -1,9 +1,9 @@
 # Input System: Runtime Key Rebinding
 
-The Input System supports interactive rebinding for controls/settings screens. It requires an Input Action configured in an Input Actions asset and the Input System package. Rebinding should target a specific binding index; composite bindings often require rebinding their parts (for example, the Up part of a WASD composite).
+The Input System supports interactive rebinding for settings screens. Requirements: Input System package, an Input Actions asset, and a binding on the action to rebind. A composite binding such as a 2D Vector usually needs one of its parts selected (for example, Up), not the composite root.
 
 ## Rebinding component
-Save as RuntimeRebind.cs and assign the target InputActionReference plus the binding index to rebind. Hook StartRebind from a settings button and display the resulting override path in UI as appropriate.
+Save as RuntimeRebind.cs. Assign the InputActionReference, exact binding index, InputActionAsset, and a unique PlayerPrefs key.
 
     using UnityEngine;
     using UnityEngine.InputSystem;
@@ -11,49 +11,76 @@ Save as RuntimeRebind.cs and assign the target InputActionReference plus the bin
     public sealed class RuntimeRebind : MonoBehaviour
     {
         [SerializeField] private InputActionReference actionReference;
+        [SerializeField] private InputActionAsset actionsAsset;
         [SerializeField, Min(0)] private int bindingIndex;
+        [SerializeField] private string preferencesKey = "input-overrides";
         private InputActionRebindingExtensions.RebindingOperation operation;
+        private bool actionWasEnabled;
+
+        private void Awake() => LoadOverrides();
 
         public void StartRebind()
         {
-            if (actionReference == null || actionReference.action == null) return;
+            if (operation != null || actionReference == null ||
+                actionReference.action == null) return;
+
             InputAction action = actionReference.action;
             if (bindingIndex >= action.bindings.Count) return;
 
+            actionWasEnabled = action.enabled;
             action.Disable();
-            operation?.Dispose();
+
             operation = action.PerformInteractiveRebinding(bindingIndex)
-                .OnComplete(op =>
-                {
-                    action.Enable();
-                    op.Dispose();
-                    operation = null;
-                })
-                .OnCancel(op =>
-                {
-                    action.Enable();
-                    op.Dispose();
-                    operation = null;
-                });
+                .OnComplete(FinishRebind)
+                .OnCancel(FinishRebind);
+
             operation.Start();
+        }
+
+        private void FinishRebind(InputActionRebindingExtensions.RebindingOperation op)
+        {
+            InputAction action = actionReference != null ? actionReference.action : null;
+            if (action != null)
+            {
+                if (actionWasEnabled) action.Enable();
+                else action.Disable();
+            }
+
+            if (operation == op) operation = null;
+            op.Dispose();
+            SaveOverrides();
+        }
+
+        public void SaveOverrides()
+        {
+            if (actionsAsset == null) return;
+            PlayerPrefs.SetString(preferencesKey, actionsAsset.SaveBindingOverridesAsJson());
+            PlayerPrefs.Save();
+        }
+
+        public void LoadOverrides()
+        {
+            if (actionsAsset == null) return;
+            if (PlayerPrefs.HasKey(preferencesKey))
+                actionsAsset.LoadBindingOverridesFromJson(
+                    PlayerPrefs.GetString(preferencesKey));
         }
 
         private void OnDisable()
         {
-            if (operation != null)
-            {
-                operation.Cancel();
-                operation.Dispose();
-                operation = null;
-            }
+            // Cancel invokes FinishRebind through the OnCancel callback.
+            if (operation != null) operation.Cancel();
         }
     }
 
-After rebinding, persist overrides if the settings should survive application restarts. The asset's original binding is not overwritten in the project; the active action has an override. Handle cancel/duplicate controls and UI feedback in a production settings screen.
+The operation is disposed on completion/cancel. Saving overrides is optional; this example uses PlayerPrefs for a simple local preference. Load overrides before enabling action maps. Don't share ownership of enable/disable state between unrelated systems.
+
+## UX details
+Display a “Press a key…” prompt while rebinding, show the resulting friendly control name, handle Escape/cancel, and warn if two actions now share the same binding. Use the Input System's Rebinding UI sample for a more complete workflow.
 
 ## Common mistakes
-- Binding index points at the composite root instead of a specific composite part.
-- A shared action is disabled while another system still depends on it.
-- Rebind is not cancelled/disposed when the menu closes.
-- Override isn't saved/restored across sessions.
-- Rebinding callback reports raw paths rather than friendly control names.
+- Binding index points to composite root instead of a part.
+- Binding override is never saved or restored.
+- The shared action is forcibly enabled/disabled by multiple scripts.
+- Rebind is not cancelled when a menu closes.
+- UI displays raw binding paths instead of readable control names.

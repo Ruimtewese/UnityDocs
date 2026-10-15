@@ -1,39 +1,63 @@
 # Unity Test Framework: Quickstart
 
-The Unity Test Framework package supports Edit Mode and Play Mode tests. Use tests for deterministic logic and to catch regressions after changes to health, inventory, saving, calculations, or state transitions.
+The Unity Test Framework supports Edit Mode and Play Mode tests. Use it to catch regressions in score rules, inventory, damage state, calculations, and save/load decisions.
 
-## Add a test assembly
-1. Install/confirm Test Framework through Package Manager.
-2. Create a Tests folder and use the Unity Editor's test assembly workflow so test files compile in a test assembly.
-3. Choose Edit Mode for ordinary C# logic that doesn't need a running scene; choose Play Mode for behavior requiring the Unity runtime.
+## Setup
+1. Install/confirm Test Framework in Package Manager.
+2. Create a test assembly using the Editor's test assembly workflow.
+3. Choose Edit Mode for pure C# logic and Play Mode for behavior requiring Unity runtime, GameObjects, physics, or coroutines.
 4. Open Window → General → Test Runner and run the desired tests.
 
-## Example logic test
-Place this in a test assembly that references the runtime assembly containing a class named ScoreRules. This sample illustrates the NUnit shape; ScoreRules is an example dependency you must implement in your project before this test compiles.
+## Example: extract logic, then test it
 
-    using NUnit.Framework;
+A pure C# class is easy to test without a scene. In your runtime assembly, save this as ScoreCounterModel.cs:
 
-    public sealed class ScoreRulesTests
+    public sealed class ScoreCounterModel
     {
-        [Test]
-        public void PositivePointsIncreaseScore()
+        public int Score { get; private set; }
+
+        public void Add(int points)
         {
-            int score = 10;
-            int points = 5;
-            score += points;
-            Assert.AreEqual(15, score);
+            if (points > 0) Score += points;
         }
     }
 
-For useful tests, put calculations/state transitions in methods that can be tested independently, rather than testing only private Unity callbacks. Add tests for boundaries: null inputs, zero/negative values, empty inventories, save file missing, and repeated damage.
+In the test assembly, save as ScoreCounterModelTests.cs. It must reference the runtime assembly containing ScoreCounterModel.
+
+    using NUnit.Framework;
+
+    public sealed class ScoreCounterModelTests
+    {
+        [Test]
+        public void AddPositivePointsIncreasesScore()
+        {
+            var model = new ScoreCounterModel();
+            model.Add(5);
+            Assert.AreEqual(5, model.Score);
+        }
+
+        [Test]
+        public void NonPositivePointsAreIgnored()
+        {
+            var model = new ScoreCounterModel();
+            model.Add(5);
+            model.Add(0);
+            model.Add(-2);
+            Assert.AreEqual(5, model.Score);
+        }
+    }
+
+These examples test real logic only if the game uses the same ScoreCounterModel class. Avoid testing duplicate sample logic that production code does not call.
 
 ## Test categories
 - Edit Mode: fast tests for pure logic and editor-time behavior.
 - Play Mode: tests for GameObjects, coroutines, physics, and scene interactions.
-- Build validation/manual QA: platform behaviors that do not show up in Editor tests.
+- Build/manual QA: platform behavior and device integration.
+
+Add boundary tests for nulls, empty collections, zero/negative values, missing save files, malformed save data, and repeated events.
 
 ## Common mistakes
-- Test script is compiled into the wrong assembly.
-- Runtime assembly is not referenced from the test assembly.
-- Test relies on unspecified scene/script execution order.
-- A test only asserts the happy path and ignores edge cases.
+- Test script compiles in the wrong assembly.
+- Runtime assembly is not referenced by tests.
+- Test relies on unspecified scene execution order.
+- Only happy path is tested.
