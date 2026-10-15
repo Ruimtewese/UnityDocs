@@ -2,6 +2,7 @@
 
 ## Guides
 - [CharacterController guide](./CharacterController-Guide.md)
+- [CharacterController slopes and steps](./CharacterController-Slopes-and-Steps.md)
 - [Jumping and ground checks](./Jumping-and-Ground-Checks.md)
 - [Rigidbody movement](./Rigidbody-Movement.md)
 - [Camera-relative Rigidbody movement](./Camera-Relative-Rigidbody-Movement.md)
@@ -11,15 +12,10 @@
 ## Choose an approach
 - Rigidbody controller: physics drives movement and collision response.
 - CharacterController: script calculates displacement and calls Move; gravity is normally implemented in code.
-- Transform-driven movement: suitable for non-physics objects or controlled cases, but does not provide ordinary physics collision response by itself.
+- Transform-driven movement: suitable for non-physics objects or controlled cases, but does not provide ordinary physics collision response.
 
 ## Camera-relative movement
 Flatten camera forward/right onto the ground plane, normalize as appropriate, then combine with input. This makes controls follow view direction without moving upward when the camera looks down.
 
-## Rotation
-Use quaternions for 3D orientation operations. Decide whether the character faces input direction, velocity, camera, or target and keep that convention consistent.
-
-## Common mistakes
-CharacterController.Move accepts displacement and does not apply gravity automatically. Transform movement can conflict with Rigidbody control. Clamp vertical motion and test slopes, steps, and moving platforms.
-
-References: [CharacterController API](https://docs.unity3d.com/ScriptReference/CharacterController.html) · [Rigidbody API](https://docs.unity3d.com/ScriptReference/Rigidbody.html)
+## Rotation and troubleshooting
+Use quaternions for 3D orientation. Decide whether the character faces input direction, velocity, camera, or target. CharacterController.Move accepts displacement and does not apply gravity. Transform movement can conflict with Rigidbody control. Test slopes, steps, moving platforms, and edges.

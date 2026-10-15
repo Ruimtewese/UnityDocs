@@ -2,6 +2,7 @@
 
 ## Guides
 - [Scene transitions and pause](./Scene-Transitions-and-Pause.md)
+- [Win/lose state flow](./Win-Lose-and-Game-State.md)
 - [Tilemaps, sprites, and collision](./Tilemap-Sprites-and-Collision.md)
 - [Damage, knockback, invulnerability](./Damage-Knockback-and-Invulnerability.md)
 - [Pickups and respawning](./Pickups-and-Respawning.md)
@@ -9,7 +10,7 @@
 - [Save/load JSON](./Save-Load-JSON.md)
 
 ## Recommended ownership
-Gameplay systems should own rules and state; UI displays those values. Health should not need to know how the HUD is laid out. A pickup should award collection state once, then notify inventory/score. A checkpoint should store a position while respawn logic decides how velocity, health, and inventory are restored.
+Gameplay systems own rules/state; UI displays those values. Health should not know HUD layout. Pickups award collection state once, then notify inventory/score. Checkpoints store a position while respawn logic decides how velocity, health, and items are restored.
 
 ## Testing checklist
-Test repeated triggers, invalid/missing references, scene reload, pause state restoration, checkpoint respawn at world origin, and saving when a file is missing or malformed.
+Test repeated triggers, missing references, scene reload, timeScale restoration, checkpoint at world origin, and missing/malformed save files.
