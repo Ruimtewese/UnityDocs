@@ -1,22 +1,23 @@
-# 3D: Optimization
+# 3D: Optimization and Project Quality
 
-Profile a representative build before changing architecture. Use the Unity Profiler for CPU/GPU/memory data and the Frame Debugger for rendering analysis.
+## Guides
+- [Build and performance checklist](./Build-and-Performance-Checklist.md)
+- [Memory and asset loading](./Memory-and-Asset-Loading.md)
+- [Version control for Unity](./Version-Control-for-Unity.md)
+- [Unity Test Framework quickstart](./Unity-Test-Framework-Quickstart.md)
 
-## Areas to investigate
-- Mesh complexity, LOD Groups, and occlusion culling suitability.
-- Draw calls, material variants, shader complexity, and real-time shadows.
-- Texture dimensions, compression, mipmaps, and memory usage.
-- Physics query frequency, collider complexity, and Rigidbody count.
-- Per-frame allocations, unnecessary Update work, and repeated scene searches.
-- Object creation/destruction churn and whether pooling improves measured performance.
+## Profile-driven workflow
+Establish a baseline on target hardware; measure CPU, GPU, memory, garbage collection, physics, rendering, and AI; change one thing; measure again. Do not optimize based only on intuition or Editor performance.
 
-## Workflow
-1. Capture a baseline on target hardware.
-2. Identify the actual bottleneck.
-3. Change one relevant factor.
-4. Re-profile and compare.
-5. Test visual quality and gameplay behaviour after optimization.
+## Typical costs
+- Frequent Instantiate/Destroy and per-frame allocations.
+- Large textures/meshes/audio kept in memory.
+- Complex colliders and excessive physics bodies.
+- Real-time lights, shadows, transparency, and post-processing.
+- Unnecessary scene-wide searches and over-frequent AI path updates.
 
-Do not assume polygon count is the only cost. GPU fill rate, overdraw, shader cost, CPU scripts, physics, and memory can all be limiting factors.
+## Build quality
+Commit ProjectSettings and package manifest/lock files. Keep .meta files in version control. Test missing/corrupt save data, scene transitions, platform input, and target-device performance.
 
-Reference: [Unity Profiler](https://docs.unity3d.com/Manual/Profiler.html)
+## Official references
+[Unity Profiler](https://docs.unity3d.com/Manual/Profiler.html) · [Unity Test Framework](https://docs.unity3d.com/6000.0/Manual/com.unity.test-framework.html)
