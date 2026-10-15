@@ -2,6 +2,8 @@
 
 Understand the 2D coordinate plane, sprites, pixels per unit, sorting, orthographic projection, and asset import.
 
+For worked examples of screen/world conversion and pixel sizing, see [Coordinate Spaces and PPU](./Coordinate-Spaces-and-PPU.md).
+
 ## Coordinates and camera
 - X/Y usually describe gameplay movement; Z can affect depth and sorting configuration.
 - Orthographic Size is half the vertical view span in world units; full vertical span is twice that value.

@@ -2,6 +2,10 @@
 
 Movement patterns differ between platformers and top-down games. Separate input collection from movement so controls can later be replaced by AI or replay input.
 
+## Detailed guides
+- [Platformer Controller — complete setup and code](./Platformer-Controller.md)
+- [Top-Down Movement — complete setup and code](./Top-Down-Movement.md)
+
 ## Platformer checklist
 - Horizontal acceleration and deceleration.
 - Ground detection using a small overlap or cast and a LayerMask.

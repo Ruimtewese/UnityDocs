@@ -9,7 +9,7 @@ Use a Rigidbody controller when collision response, forces, momentum, or other p
 - Input actions: Move (Vector2), with optional Jump (Button).
 
 ## Velocity-driven movement
-For a simple arcade controller, read input in Update and apply the intended horizontal velocity in FixedUpdate. Keep vertical velocity from gravity/jumps intact. Exact velocity property naming can differ between Unity API versions, so consult the installed version's Rigidbody documentation.
+For a simple arcade controller, read input in Update and apply the intended horizontal velocity in FixedUpdate. Keep vertical velocity from gravity/jumps intact. This example uses the Unity 6 Rigidbody.linearVelocity API. For older Editor versions, check the version-specific API documentation.
 
 ```csharp
 using UnityEngine;
@@ -31,15 +31,15 @@ public sealed class RigidbodyPlanarMover : MonoBehaviour
     private void FixedUpdate()
     {
         Vector3 horizontal = new Vector3(input.x, 0f, input.y) * speed;
-        Vector3 velocity = body.velocity;
+        Vector3 velocity = body.linearVelocity;
         velocity.x = horizontal.x;
         velocity.z = horizontal.z;
-        body.velocity = velocity;
+        body.linearVelocity = velocity;
     }
 }
 ```
 
-This sample intentionally exposes `SetMoveInput` rather than binding a particular input package. Call it from your chosen input layer. In Unity versions where the Rigidbody velocity API has a different name, adapt to the version's official API.
+This sample intentionally exposes `SetMoveInput` rather than binding a particular input package. Call it from your chosen input layer. For older Editor versions, adapt to the version-specific Rigidbody API.
 
 ## Force-driven movement
 Use AddForce when acceleration and momentum are part of the desired feel. Tune force, mass, drag/damping, and maximum speed together. If you continuously overwrite velocity every physics step, force-based acceleration will be overridden.

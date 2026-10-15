@@ -31,14 +31,14 @@ public sealed class AnimatorSpeedDriver : MonoBehaviour
     private void Update()
     {
         if (animator == null || body == null) return;
-        Vector3 horizontalVelocity = body.velocity;
+        Vector3 horizontalVelocity = body.linearVelocity;
         horizontalVelocity.y = 0f;
         animator.SetFloat(SpeedId, horizontalVelocity.magnitude);
     }
 }
 ```
 
-Adapt the Rigidbody velocity member to the Unity version in use. For a CharacterController, derive speed from the controller's movement displacement or a movement variable instead.
+This example uses the Unity 6 Rigidbody.linearVelocity API. Check the version-specific API if you use an older Editor. For a CharacterController, derive speed from the controller's movement displacement or a movement variable instead.
 
 ## Transition settings
 - **Conditions:** parameters required to enter the destination state.

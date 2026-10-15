@@ -1,5 +1,7 @@
 # 3D: Modeling and Materials
 
+For a systematic import checklist and common shader/material failures, see [Material and Model Import Troubleshooting](./Material-Import-Troubleshooting.md).
+
 ## Model import settings
 Inspect scale factor, mesh compression, normals/tangents, blend shapes, rig, animation, material import, and animation clip settings. Model pivots and units should be deliberate in the source tool and import pipeline.
 

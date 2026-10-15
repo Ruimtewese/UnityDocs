@@ -76,18 +76,18 @@ public sealed class PlatformerController2D : MonoBehaviour
 
         if (grounded && jumpQueued)
         {
-            Vector2 velocity = body.velocity;
+            Vector2 velocity = body.linearVelocity;
             velocity.y = jumpVelocity;
-            body.velocity = velocity;
+            body.linearVelocity = velocity;
             jumpQueued = false;
         }
     }
 
     private void FixedUpdate()
     {
-        Vector2 velocity = body.velocity;
+        Vector2 velocity = body.linearVelocity;
         velocity.x = horizontal * moveSpeed;
-        body.velocity = velocity;
+        body.linearVelocity = velocity;
     }
 
     private void OnJump(InputAction.CallbackContext context)
@@ -104,7 +104,7 @@ public sealed class PlatformerController2D : MonoBehaviour
 }
 ```
 
-> API note: recent Unity versions expose Rigidbody2D's velocity through the documented Rigidbody2D API; check the API for the exact Unity version in your project if a member name differs.
+> API note: recent Unity versions expose Rigidbody2D's linearVelocity through the documented Rigidbody2D API; check the API for the exact Unity version in your project if a member name differs.
 
 ## Inspector checklist
 - Move Action points to the Move action, not the whole action map.

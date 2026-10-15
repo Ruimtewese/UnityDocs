@@ -1,5 +1,7 @@
 # 3D: Movement
 
+Complete examples: [CharacterController Guide](./CharacterController-Guide.md) · [Rigidbody Movement Patterns](./Rigidbody-Movement.md).
+
 ## Choose an approach
 - **Rigidbody controller:** physics simulation drives movement and collision response.
 - **CharacterController:** script calculates displacement and calls CharacterController.Move; gravity is normally applied by your own code.

@@ -1,5 +1,7 @@
 # 3D: Core Concepts
 
+For vector operations, coordinate conversion, quaternion rotation, and time-step concepts, see [Transforms and Essential Math](./Transforms-and-Math.md).
+
 ## Coordinate spaces
 Unity commonly uses X/Z for ground-plane movement and Y for vertical height, though a project can choose other conventions. Transform.position is world space; localPosition is relative to the parent. Parent rotation and scale affect child world transforms.
 

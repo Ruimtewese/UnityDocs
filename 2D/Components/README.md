@@ -7,6 +7,8 @@
 - **Animator:** evaluates an Animator Controller and its parameters to select visual states.
 - **SortingGroup:** sorts a group of renderers together, useful for multi-sprite characters.
 
+Detailed settings reference: [2D Component Inspector Reference](./Inspector-Reference.md).
+
 ## Choosing components
 Use the simplest collider that supports the gameplay. Add Rigidbody2D when an object needs physics simulation or relevant collision/trigger interactions. Static level geometry generally does not need to be moved by script.
 

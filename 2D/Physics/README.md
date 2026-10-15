@@ -5,6 +5,8 @@
 - **Kinematic:** controlled by code and not driven by forces in the same way as Dynamic.
 - **Static:** represents geometry that does not move under simulation.
 
+Detailed query examples and layer filtering: [Queries and Collision Matrix](./Queries-and-Collision-Matrix.md).
+
 ## Collision and trigger callbacks
 - Solid contacts: OnCollisionEnter2D, OnCollisionStay2D, OnCollisionExit2D.
 - Trigger overlaps: OnTriggerEnter2D, OnTriggerStay2D, OnTriggerExit2D.

@@ -9,6 +9,8 @@
 - **Composite Collider 2D:** can combine adjacent outlines when configured with a suitable Rigidbody2D setup.
 - **Rule Tiles:** can select sprites based on neighbours when the required package is installed.
 
+Step-by-step collision setup: [Tilemap Collision Workflow](./Tilemap-Collision-Workflow.md).
+
 ## Layer design
 Use separate tilemaps for ground, decoration, foreground, collision, hazards, and interactive tiles when their sorting or collision needs differ. Not every decorative tile needs a collider.
 

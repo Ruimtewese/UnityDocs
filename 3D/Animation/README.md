@@ -1,5 +1,7 @@
 # 3D: Animation
 
+For parameter setup, transition settings, and a script example, see [Animator Parameters and Transitions](./Animator-Parameters-and-Transitions.md).
+
 ## Animator Controller
 States reference clips or blend trees; transitions define when to move between them. Common parameters include Speed, Grounded, Direction, and triggers for one-shot actions.
 

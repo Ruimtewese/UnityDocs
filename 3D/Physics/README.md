@@ -3,6 +3,8 @@
 ## Rigidbody and Collider
 Dynamic Rigidbody objects respond to forces and collision response. Kinematic bodies are controlled by code. Static colliders describe non-moving level geometry. Use appropriate shapes and avoid unnecessarily complex MeshColliders.
 
+Worked example: [Raycast Interaction](./Raycast-Interaction.md).
+
 ## Useful callbacks and queries
 - Collisions: OnCollisionEnter, OnCollisionStay, OnCollisionExit.
 - Triggers: OnTriggerEnter, OnTriggerStay, OnTriggerExit.

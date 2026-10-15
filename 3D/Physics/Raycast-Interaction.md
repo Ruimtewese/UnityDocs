@@ -12,6 +12,7 @@ A raycast tests for a collider along a line. It is commonly used for looking at 
 
 ```csharp
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public sealed class RaycastInteractor : MonoBehaviour
 {
@@ -44,7 +45,7 @@ public sealed class RaycastInteractor : MonoBehaviour
 }
 ```
 
-This example uses the Input System keyboard API, so include `using UnityEngine.InputSystem;` and ensure the Input System package is installed. For a production project, separate input from raycast detection and implement a shared interface such as `IInteractable`.
+This example uses the Input System keyboard API; ensure the Input System package is installed and active. For a production project, separate input from raycast detection and implement a shared interface such as `IInteractable`.
 
 ## Why use a LayerMask?
 Without filtering, the ray may hit the player, invisible triggers, decoration, or unrelated colliders. A dedicated layer makes target selection predictable.

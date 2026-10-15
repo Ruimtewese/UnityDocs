@@ -9,6 +9,8 @@
 - **CharacterController:** collision-constrained movement driven by script rather than standard Dynamic Rigidbody simulation.
 - **Animator:** evaluates animation states and parameters.
 
+Detailed settings reference: [3D Component Inspector Reference](./Inspector-Reference.md).
+
 ## Selection guidance
 Use simple colliders where possible. A CharacterController and a Dynamic Rigidbody are different movement architectures. Avoid putting a non-convex MeshCollider on a moving Rigidbody unless the documented setup supports it.
 

@@ -44,7 +44,7 @@ public sealed class TopDownMovement2D : MonoBehaviour
 
     private void FixedUpdate()
     {
-        body.velocity = moveInput * speed;
+        body.linearVelocity = moveInput * speed;
     }
 }
 ```
