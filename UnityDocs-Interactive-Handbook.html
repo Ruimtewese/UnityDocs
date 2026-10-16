@@ -155,6 +155,32 @@ footer{margin-top:48px;padding:25px 0}
 .nav-meta{display:none!important}
 .welcome-card{border:0!important;outline:0}
 .welcome-card:hover{border:0!important}
+
+/* Table of contents: compact floating control with a phone-friendly side drawer. */
+#tocBox.toc{position:fixed;z-index:1000;right:14px;bottom:14px;margin:0;padding:0;border:0;background:transparent;width:auto;max-width:calc(100vw - 28px);box-shadow:none}
+#tocBox.toc>summary{display:flex;align-items:center;justify-content:center;min-height:46px;padding:0 17px;list-style:none;cursor:pointer;background:var(--orange);color:#fff;border:1px solid var(--orange);font-size:13px;font-weight:800;letter-spacing:.01em;box-shadow:0 5px 22px #0008;user-select:none}
+#tocBox.toc>summary::-webkit-details-marker{display:none}
+#tocBox.toc>summary::before{content:"☰";font-size:16px;margin-right:9px}
+#tocBox.toc[open]{position:fixed;inset:0;right:0;bottom:0;width:auto;max-width:none;padding:0;margin:0;background:rgba(0,0,0,.68);display:block}
+#tocBox.toc[open]>summary{position:absolute;z-index:2;top:max(12px,env(safe-area-inset-top));right:calc(min(360px,88vw) + 12px);min-height:44px;padding:0 14px;background:#202020;color:#fff;border-color:#444;box-shadow:none}
+#tocBox.toc[open]>summary::before{content:"×";font-size:22px;line-height:1}
+#tocBox.toc[open]>ol{position:absolute;top:0;right:0;bottom:0;width:min(360px,88vw);max-height:none;overflow-y:auto;overscroll-behavior:contain;box-sizing:border-box;margin:0;padding:max(72px,calc(env(safe-area-inset-top) + 64px)) 20px max(24px,env(safe-area-inset-bottom));background:#111;border-left:1px solid #383838;box-shadow:-12px 0 35px #0007;list-style:none}
+#tocBox.toc[open]>ol::before{content:"ON THIS PAGE";display:block;color:var(--orange);font-size:11px;font-weight:900;letter-spacing:.14em;margin:0 0 15px}
+#tocBox.toc[open] li{margin:0!important;padding:0;border-bottom:1px solid #252525;font-size:14px;line-height:1.45}
+#tocBox.toc[open] li a{display:block;padding:12px 2px;color:#e5e5e5;text-decoration:none}
+#tocBox.toc[open] li a:hover,#tocBox.toc[open] li a:focus-visible{color:var(--orange)}
+#tocBox.toc[open] li[style*="margin-left"]{padding-left:14px;border-bottom-style:dotted}
+@media(max-width:700px){
+ #tocBox.toc{right:12px;bottom:max(12px,env(safe-area-inset-bottom))}
+ #tocBox.toc>summary{min-height:48px;padding:0 16px}
+ #tocBox.toc[open]>ol{width:min(340px,88vw);padding-left:17px;padding-right:17px}
+ #tocBox.toc[open]>summary{right:calc(min(340px,88vw) + 10px)}
+}
+@media(prefers-reduced-motion:no-preference){
+ #tocBox.toc[open]>ol{animation:tocDrawerIn .18s ease-out}
+ @keyframes tocDrawerIn{from{transform:translateX(18px);opacity:.7}to{transform:translateX(0);opacity:1}}
+}
+
 </style>
 </head>
 <body>
@@ -321,6 +347,12 @@ function copyText(text,button){
 }
 function runSearch(v){query=v;onlySaved=false;if(query.trim())showSearch();else if(activeView==="search")showHome();else renderNav()}
 function setScope(v){scope=v;document.querySelectorAll(".scope-tab").forEach(b=>b.classList.toggle("active",b.dataset.scope===v));onlySaved=false;if(activeView==="home")renderNav();else if(activeView==="search")showSearch();else renderNav()}
+
+$("tocBox").addEventListener("click",e=>{
+ if(e.target===$("tocBox"))$("tocBox").open=false;
+ const link=e.target.closest("#tocList a");
+ if(link)$("tocBox").open=false;
+});
 $("globalSearch").addEventListener("input",e=>runSearch(e.target.value));
 $("globalSearch").addEventListener("keydown",e=>{if(e.key==="Enter"&&getFiltered()[0])openDoc(getFiltered()[0].path)});
 document.querySelectorAll(".scope-tab").forEach(b=>b.addEventListener("click",()=>setScope(b.dataset.scope)));
