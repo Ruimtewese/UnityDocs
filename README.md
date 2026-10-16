@@ -25,10 +25,22 @@ A practical reference for building 2D and 3D games in Unity. The handbook focuse
 - [Mouse look](./3D/Movement/Mouse-Look.md)
 - [Rigidbody physics](./3D/Physics/Rigidbody-Physics.md)
 - [Collision matrix and triggers](./3D/Physics/Collision-Matrix-and-Triggers.md)
-- [Health and damage system](./3D/Gameplay/Health-and-Damage-System.md)
-- [JSON save system](./3D/Gameplay/Save-System-JSON.md)
+- [Health and damage system](./3D/Gameplay/Health-Damage-and-Death.md)
+- [JSON save system](./3D/Gameplay/Saving-Loading-JSON.md)
 - [LOD and occlusion culling](./3D/Rendering/LOD-and-Occlusion.md)
 - [Networking architecture](./3D/Networking/Networking-Architecture.md)
+
+## New: expanded core game systems
+
+The 2D and 3D handbooks now each have dedicated system guides with setup steps and complete example scripts:
+
+| Topic | 2D | 3D |
+|---|---|---|
+| Combat and projectiles | [Open guide](./2D/Systems/Combat-and-Projectiles.md) | [Open guide](./3D/Systems/Combat-and-Projectiles.md) |
+| Enemy AI and combat states | [Open guide](./2D/Systems/Enemy-AI-and-Combat-States.md) | [Open guide](./3D/Systems/Enemy-AI-and-Combat-States.md) |
+| Inventory and ScriptableObjects | [Open guide](./2D/Systems/Inventory-and-ScriptableObjects.md) | [Open guide](./3D/Systems/Inventory-and-ScriptableObjects.md) |
+| Scene transitions and save/load | [Open guide](./2D/Systems/Scene-Flow-and-Save-Load.md) | [Open guide](./3D/Systems/Scene-Flow-and-Save-Load.md) |
+| UI menus, audio, architecture | [Open guide](./2D/Systems/UI-Audio-and-Architecture.md) | [Open guide](./3D/Systems/UI-Audio-and-Architecture.md) |
 
 ## Suggested learning path
 
@@ -36,7 +48,7 @@ A practical reference for building 2D and 3D games in Unity. The handbook focuse
 2. Learn core C#, Unity's lifecycle, and object/component APIs.
 3. Set up input and choose movement/physics architecture.
 4. Add camera, rendering, animation, UI, and audio.
-5. Build health, pickups, inventory, AI, scene flow, and saving.
+5. Build health, combat, projectiles, inventory, AI, scene flow, and saving.
 6. Test, debug, profile, and build for the target platform.
 
 ## Conventions
