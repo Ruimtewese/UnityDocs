@@ -6,6 +6,8 @@ A practical reference for building 2D and 3D games in Unity. The handbook focuse
 
 ## Start here
 
+- **[Open the interactive handbook (single offline HTML file)](./UnityDocs-Interactive-Handbook.html)** — searchable 2D/3D reference with copyable code, bookmarks, and print-to-PDF.
+
 - [2D reference and learning path](./2D/README.md)
 - [3D reference and learning path](./3D/README.md)
 
