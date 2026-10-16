@@ -19,4 +19,11 @@ Focused guides for Unity 6 2D game development. Most 2D physics code uses Rigidb
 14. [Prefabs/data](./Core-Concepts/Prefabs-ScriptableObjects-and-Data.md) · [Enemy AI](./AI/Enemy-Patrol-and-Chase.md)
 15. [Screen shake](./Recipes/Screen-Shake.md) · [Screen bounds/wrapping](./Recipes/Screen-Bounds-and-Wrapping.md) · [Debugging](./Debugging/Debugging-and-Profiling.md) · [Pooling/performance](./Optimization/Performance-and-Object-Pooling.md)
 
+## Expanded core systems (complete examples)
+- [Combat and projectiles](./Systems/Combat-and-Projectiles.md) — damage contract, health, melee, projectile, launcher.
+- [Enemy AI and combat states](./Systems/Enemy-AI-and-Combat-States.md) — patrol/chase/attack/return state machine.
+- [Inventory and ScriptableObjects](./Systems/Inventory-and-ScriptableObjects.md) — item definitions, stacking inventory, pickups, save guidance.
+- [Scene flow and save/load](./Systems/Scene-Flow-and-Save-Load.md) — async loading, pause controller, JSON save data.
+- [UI, audio, and architecture](./Systems/UI-Audio-and-Architecture.md) — audio service, event-driven health text, reusable design rules.
+
 Official 2D manual: https://docs.unity3d.com/Manual/Unity2D.html
