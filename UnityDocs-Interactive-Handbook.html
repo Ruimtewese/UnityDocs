@@ -126,6 +126,9 @@ function renderMarkdown(markdown,doc){
  let out="",para=[],listType=null,code=null,codeLang="",tableRows=[];
  const flushPara=()=>{if(para.length){out+="<p>"+inlineMd(para.join(" "),doc)+"</p>";para=[]}};
  const closeList=()=>{if(listType){out+="</"+listType+">";listType=null}};
+ const addCodeBlock=(body,language)=>{
+  out+='<div class="code-wrap"><div class="code-head"><span>'+esc(language||"CODE")+'</span><button class="copy-code" type="button">COPY CODE</button></div><pre><code>'+esc(body.join("\n"))+'</code></pre></div>';
+ };
  const flushTable=()=>{
   if(!tableRows.length)return;
   const cells=row=>row.replace(/^\s*\|/,"").replace(/\|\s*$/,"").split("|").map(c=>c.trim());
@@ -137,17 +140,25 @@ function renderMarkdown(markdown,doc){
  for(let i=0;i<lines.length;i++){
   const line=lines[i],trim=line.trim();
   if(code!==null){
-   if(trim.startsWith(tick.repeat(3))){
-    out+='<div class="code-wrap"><div class="code-head"><span>'+esc(codeLang||"CODE")+'</span><button class="copy-code" type="button">COPY CODE</button></div><pre><code>'+esc(code.join("\n"))+'</code></pre></div>';
-    code=null;codeLang="";continue;
-   }
+   if(trim.startsWith(tick.repeat(3))){addCodeBlock(code,codeLang);code=null;codeLang="";continue}
    code.push(line);continue;
   }
-  if(trim.startsWith(tick.repeat(3))){
-   flushPara();closeList();flushTable();code=[];codeLang=trim.slice(3).trim().split(/\s+/)[0]||"code";continue;
-  }
+  if(trim.startsWith(tick.repeat(3))){flushPara();closeList();flushTable();code=[];codeLang=trim.slice(3).trim().split(/\s+/)[0]||"code";continue}
   if(trim.startsWith("|")&&trim.endsWith("|")){flushPara();closeList();tableRows.push(trim);continue}
   if(tableRows.length&&!(trim.startsWith("|")&&trim.endsWith("|")))flushTable();
+  if(/^( {4,}|\t)/.test(line)){
+   flushPara();closeList();
+   const body=[line.replace(/^( {4}|\t)/,"")];let j=i+1;
+   while(j<lines.length){
+    if(!lines[j].trim()){
+     if(j+1<lines.length&&/^( {4,}|\t)/.test(lines[j+1])){body.push("");j++;continue}
+     break;
+    }
+    if(/^( {4,}|\t)/.test(lines[j])){body.push(lines[j].replace(/^( {4}|\t)/,""));j++;continue}
+    break;
+   }
+   addCodeBlock(body,"CODE");i=j-1;continue;
+  }
   if(!trim){flushPara();closeList();continue}
   const heading=line.match(/^(#{1,6})\s+(.+?)\s*#*\s*$/);
   if(heading){flushPara();closeList();const n=heading[1].length,t=heading[2].replace(/\*\*/g,"").split(tick).join("");out+="<h"+n+' id="'+slug(t)+'">'+inlineMd(t,doc)+"</h"+n+">";continue}
@@ -157,7 +168,7 @@ function renderMarkdown(markdown,doc){
   if(ul||ol){flushPara();const type=ul?"ul":"ol";if(listType!==type){closeList();out+="<"+type+">";listType=type}out+="<li>"+inlineMd((ul||ol)[1],doc)+"</li>";continue}
   closeList();para.push(trim);
  }
- if(code!==null)out+='<div class="code-wrap"><div class="code-head"><span>'+esc(codeLang||"CODE")+'</span><button class="copy-code" type="button">COPY CODE</button></div><pre><code>'+esc(code.join("\n"))+'</code></pre></div>';
+ if(code!==null)addCodeBlock(code,codeLang);
  flushPara();closeList();flushTable();return out;
 }
 function inScope(d){return scope==="All"||d.scope===scope||(scope==="Shared"&&d.scope==="Shared")}
