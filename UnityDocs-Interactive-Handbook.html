@@ -179,16 +179,38 @@ footer{margin-top:48px;padding:25px 0}
  #tocBox.toc[open]>ol{padding-left:16px;padding-right:16px}
 }
 @media(prefers-reduced-motion:reduce){#tocBox.toc{transition:none}}
+
+/* Global topic navigation: desktop sidebar, collapsible off-canvas drawer on phones. */
+.mobile-nav-toggle,.nav-backdrop{display:none}
+#tocBox{display:none!important}
+@media(max-width:700px){
+ .topbar{display:flex;align-items:center;flex-wrap:wrap}
+ .mobile-nav-toggle{display:inline-flex;align-items:center;justify-content:center;gap:7px;order:0;flex:0 0 auto;min-height:40px;padding:0 11px;font-size:12px}
+ .brand{order:1;flex:1;min-width:0}
+ .top-actions{order:2}
+ .top-search{order:3;flex-basis:100%;width:100%}
+ #handbookSidebar.sidebar{position:fixed;z-index:1201;top:0;left:0;bottom:0;width:min(340px,88vw);height:100dvh;max-height:none;box-sizing:border-box;transform:translateX(-105%);transition:transform .22s ease;overflow-y:auto;overscroll-behavior:contain;background:#101010;border:0;border-right:1px solid #383838;box-shadow:10px 0 35px #0008;padding-bottom:env(safe-area-inset-bottom)}
+ #handbookSidebar.sidebar.mobile-open{transform:translateX(0)}
+ #handbookSidebar .side-top{padding-top:max(18px,env(safe-area-inset-top))}
+ #handbookSidebar .nav-list{max-height:none;flex:1;overflow-y:auto;padding-bottom:20px}
+ .nav-backdrop{display:block;position:fixed;z-index:1200;inset:0;background:rgba(0,0,0,.62);opacity:0;visibility:hidden;transition:opacity .2s ease,visibility .2s ease}
+ .nav-backdrop.visible{opacity:1;visibility:visible}
+ body.nav-drawer-open{overflow:hidden}
+}
+@media(prefers-reduced-motion:reduce){#handbookSidebar.sidebar,.nav-backdrop{transition:none}}
+
 </style>
 </head>
 <body>
 <header class="topbar">
+  <button class="btn mobile-nav-toggle" id="mobileNavToggle" aria-label="Open handbook navigation" aria-expanded="false">☰ Topics</button>
   <a class="brand" href="#" id="homeLink"><span class="brand-mark">U</span><span><span class="brand-name">UNITYDOCS</span><br><span class="brand-sub">Interactive handbook</span></span></a>
   <div class="top-search"><input id="globalSearch" type="search" placeholder="Search guides, APIs, errors, code…" autocomplete="off" aria-label="Search the handbook"><span class="keyhint">/</span></div>
   <div class="top-actions"><button class="btn desktop-only" id="bookmarksOnly">★ Saved</button><button class="btn" id="printTop">Print / PDF</button></div>
 </header>
 <div class="layout">
-  <aside class="sidebar">
+  <div class="nav-backdrop" id="navBackdrop" aria-hidden="true"></div>
+  <aside class="sidebar" id="handbookSidebar">
     <div class="side-top"><div class="side-kicker">Browse handbook</div><div class="scope-tabs" role="tablist" aria-label="Documentation scope"><button class="scope-tab active" data-scope="All">All</button><button class="scope-tab" data-scope="2D">2D</button><button class="scope-tab" data-scope="3D">3D</button><button class="scope-tab" data-scope="Shared">Core</button></div></div>
     <div class="nav-meta"><span id="navLabel">All documentation</span><span id="navCount"></span></div><nav class="nav-list" id="navList" aria-label="Guide navigation"></nav>
   </aside>
@@ -351,6 +373,19 @@ $("tocBox").addEventListener("click",e=>{
  const link=e.target.closest("#tocList a");
  if(link)$("tocBox").open=false;
 });
+
+function setMobileNav(open){
+ const side=$("handbookSidebar"),backdrop=$("navBackdrop"),toggle=$("mobileNavToggle");
+ if(!side||!backdrop||!toggle)return;
+ side.classList.toggle("mobile-open",open);backdrop.classList.toggle("visible",open);
+ document.body.classList.toggle("nav-drawer-open",open);toggle.setAttribute("aria-expanded",String(open));
+ toggle.setAttribute("aria-label",open?"Close handbook navigation":"Open handbook navigation");
+}
+$("mobileNavToggle").addEventListener("click",()=>setMobileNav(!$("handbookSidebar").classList.contains("mobile-open")));
+$("navBackdrop").addEventListener("click",()=>setMobileNav(false));
+$("navList").addEventListener("click",e=>{if(e.target.closest("[data-open]"))setMobileNav(false)});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")setMobileNav(false)});
+
 $("globalSearch").addEventListener("input",e=>runSearch(e.target.value));
 $("globalSearch").addEventListener("keydown",e=>{if(e.key==="Enter"&&getFiltered()[0])openDoc(getFiltered()[0].path)});
 document.querySelectorAll(".scope-tab").forEach(b=>b.addEventListener("click",()=>setScope(b.dataset.scope)));
