@@ -21,4 +21,11 @@ Focused guides for Unity 6 3D games. Confirm API and package versions for the in
 16. [Networking overview](./Networking/Multiplayer-Architecture-Overview.md) · [Localization (shared guide)](../2D/Core-Concepts/Localization-Setup.md)
 17. [Addressables/resources](./Optimization/Addressables-and-Resources.md) · [Memory/loading](./Optimization/Memory-and-Asset-Loading.md) · [Version control](./Optimization/Version-Control-for-Unity.md) · [Testing](./Optimization/Unity-Test-Framework-Quickstart.md) · [Build/performance](./Optimization/Build-and-Performance-Checklist.md) · [Debugging](./Debugging/Debugging-and-Profiling.md)
 
+## Expanded core systems (complete examples)
+- [Combat and projectiles](./Systems/Combat-and-Projectiles.md) — damage contract, health, melee, projectile, launcher.
+- [Enemy AI and combat states](./Systems/Enemy-AI-and-Combat-States.md) — patrol/chase/attack/return state machine.
+- [Inventory and ScriptableObjects](./Systems/Inventory-and-ScriptableObjects.md) — item definitions, stacking inventory, pickups, save guidance.
+- [Scene flow and save/load](./Systems/Scene-Flow-and-Save-Load.md) — async loading, pause controller, JSON save data.
+- [UI, audio, and architecture](./Systems/UI-Audio-and-Architecture.md) — audio service, event-driven health text, reusable design rules.
+
 Official references: [Unity Manual](https://docs.unity3d.com/Manual/index.html) · [Scripting API](https://docs.unity3d.com/ScriptReference/)
