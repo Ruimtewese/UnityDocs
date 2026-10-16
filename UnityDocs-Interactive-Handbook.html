@@ -328,7 +328,45 @@ function getFiltered(){
  const saved=getSaved();let rows=DOCS.filter(inScope);
  if(onlySaved)rows=rows.filter(d=>saved.includes(d.path));
  if(query.trim()){const terms=query.toLowerCase().split(/\s+/).filter(Boolean);rows=rows.filter(d=>{const text=(d.title+" "+d.path+" "+d.content).toLowerCase();return terms.every(t=>text.includes(t))})}
- return rows.sort((a,b)=>{const rank=d=>d.path==="README.md"?-1:d.path==="2D/README.md"?0:d.path==="3D/README.md"?1:2;return rank(a)-rank(b)||a.path.localeCompare(b.path)});
+ const categoryOrder={
+  "2D":["Core Concepts","Movement","Input","Physics","Gameplay","Camera","Cameras","Animation","Tilemaps","UI","Systems","AI","Components","Rendering","Audio","Debugging","Optimization","Recipes","Overview"],
+  "3D":["Core Concepts","Movement","Input","Physics","Camera","Cameras","Gameplay","Animation","Rendering","Modeling and Materials","Lighting and Rendering","UI","Systems","AI","Optimization","Components","Audio","Debugging","Networking","Recipes","Overview"],
+  "Shared":["Overview"]
+ };
+ const titlePriority=[
+  /getting started|fundamentals|c#|unity lifecycle|project setup/i,
+  /movement|controller|player control|jump|platformer|character/i,
+  /input|input system|action maps/i,
+  /physics|collision|trigger|raycast|rigidbody/i,
+  /camera|follow camera|first.person|third.person/i,
+  /animation|animator|sprite flip/i,
+  /ui|user interface|health bar|menu|hud/i,
+  /gameplay|combat|weapon|projectile|damage|health/i,
+  /tilemap|level|scene|spawn|prefab/i,
+  /ai|enemy|pathfinding|navmesh|state machine/i,
+  /save|load|inventory|scriptableobject|event|architecture/i,
+  /render|material|shader|lighting|sprite/i,
+  /audio|sound|music/i,
+  /debug|test|profile|optim|performance|build/i,
+  /network|multiplayer/i,
+  /recipe|checklist|overview|readme/i
+ ];
+ const guideRank=d=>{
+  const categories=categoryOrder[d.scope]||[];
+  const ci=categories.indexOf(d.category);
+  const title=d.title||"";
+  let ti=titlePriority.findIndex(re=>re.test(title));
+  if(ti<0)ti=titlePriority.length;
+  const overview=/\/README\.md$/i.test(d.path);
+  return {category:ci<0?categories.length:ci,title:ti,overview:overview?1:0};
+ };
+ return rows.sort((a,b)=>{
+  const special=d=>d.path==="README.md"?-3:d.path==="2D/README.md"?-2:d.path==="3D/README.md"?-1:0;
+  const sa=special(a),sb=special(b);
+  if(sa!==sb)return sa-sb;
+  const ra=guideRank(a),rb=guideRank(b);
+  return ra.category-rb.category||ra.title-rb.title||ra.overview-rb.overview||a.title.localeCompare(b.title);
+ });
 }
 function renderNav(){
  filtered=getFiltered();$("navCount").textContent=filtered.length;
