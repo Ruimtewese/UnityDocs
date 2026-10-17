@@ -283,6 +283,63 @@ body{
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
 }
 
+
+/* Header spacing and search collision fixes (desktop + mobile). */
+.topbar{
+  gap:clamp(12px,1.8vw,24px);
+  padding-inline:clamp(14px,2.2vw,30px);
+}
+.brand{flex:0 0 auto;min-width:0;white-space:nowrap}
+.top-search{flex:1 1 260px;min-width:120px;width:auto;max-width:760px;margin-inline:auto}
+.top-search input{display:block;min-width:0;width:100%}
+.top-actions{flex:0 0 auto;display:flex;align-items:center;justify-content:flex-end;gap:8px;margin-left:0;white-space:nowrap}
+.top-actions .btn{flex:0 0 auto}
+@media(min-width:701px) and (max-width:900px){
+  .topbar{gap:10px;padding-inline:14px}
+  .brand{max-width:190px}
+  .brand-sub{font-size:10px}
+  .top-search{flex-basis:160px;min-width:110px}
+  .top-actions{gap:5px}
+  .top-actions .btn{padding-inline:9px;font-size:11px}
+}
+@media(max-width:700px){
+  .topbar{
+    display:grid;
+    grid-template-columns:auto minmax(0,1fr) auto;
+    align-items:center;
+    column-gap:10px;
+    row-gap:12px;
+    padding:12px;
+  }
+  .mobile-nav-toggle{grid-column:1;grid-row:1;min-width:0;padding-inline:10px}
+  .brand{grid-column:2;grid-row:1;min-width:0;overflow:hidden}
+  .brand-name{font-size:12px;letter-spacing:.09em}
+  .brand-sub{font-size:10px}
+  .top-actions{grid-column:3;grid-row:1;gap:5px;min-width:0}
+  .top-actions .btn{padding:7px 8px;font-size:10px;min-height:34px}
+  .top-actions .desktop-only{display:none!important}
+  .top-search{
+    grid-column:1 / -1;
+    grid-row:2;
+    order:initial;
+    flex:initial;
+    width:100%;
+    min-width:0;
+    max-width:none;
+    margin:0;
+  }
+  .top-search input{height:42px;padding-right:40px}
+  .keyhint{display:none}
+}
+@media(max-width:380px){
+  .topbar{column-gap:7px;padding:10px;row-gap:10px}
+  .mobile-nav-toggle{font-size:11px;padding-inline:7px}
+  .brand-mark{width:28px;height:28px}
+  .brand-name{font-size:10px;letter-spacing:.06em}
+  .brand-sub{font-size:9px}
+  .top-actions .btn{padding-inline:6px;font-size:9px}
+}
+
 </style>
 </head>
 <body>
