@@ -333,42 +333,68 @@ function getFiltered(){
   "3D":["Core Concepts","Movement","Input","Physics","Camera","Cameras","Gameplay","Animation","Rendering","Modeling and Materials","Lighting and Rendering","UI","Systems","AI","Optimization","Components","Audio","Debugging","Networking","Recipes","Overview"],
   "Shared":["Overview"]
  };
- const titlePriority=[
-  /getting started|fundamentals|c#|unity lifecycle|project setup|editor basics/i,
-  /player movement|player controller|character controller|platformer controller|movement/i,
-  /input system|input actions|player input|input/i,
-  /rigidbody|collision|trigger|physics|raycast|ground check/i,
-  /camera follow|first.person|third.person|camera/i,
-  /sprite animation|animation|animator|flipping|aiming/i,
-  /prefab|spawning|level setup|tilemap|level design/i,
-  /health|damage|combat|projectile|weapon|attack/i,
-  /ui|user interface|hud|menu|button|health bar/i,
-  /enemy|ai|pathfinding|navmesh|patrol|chase/i,
-  /scene flow|scene management|save|load|inventory|scriptableobject/i,
-  /render|material|shader|lighting|sprite|texture/i,
-  /audio|sound|music/i,
-  /debug|testing|profil|optim|performance|build/i,
-  /event|architecture|reusable|component|data|network|multiplayer/i,
-  /recipe|checklist|overview|readme/i
- ];
- const categoryRank=d=>{
-  const categories=categoryOrder[d.scope]||[];
-  const i=categories.indexOf(d.category);
-  return i<0?categories.length:i;
- };
- const guideRank=d=>{
-  const value=(d.title+" "+d.path).replace(/[-_/]/g," ").toLowerCase();
-  const i=titlePriority.findIndex(re=>re.test(value));
-  return i<0?titlePriority.length:i;
+ const usefulTitles={
+  "2D|Core Concepts":["C# Essentials for Unity Scripts","Unity C# Lifecycle and Script Architecture","2D Coordinate Spaces and Pixels Per Unit","Tags, GameObject Layers, Sorting Layers, and LayerMasks","Prefabs, ScriptableObjects, and Data","Unity Time, Coroutines, and Invoke","Inspector Attributes and Serialization Reference","Unity Localization and Accessibility Setup","2D: Core Concepts"],
+  "2D|Movement":["2D Platformer Controller — Complete Setup","2D Top-Down Movement","2D Platformer: Jump Buffering and Coyote Time","2D Moving Platforms","2D: Movement"],
+  "2D|Input":["Unity Input System: 2D Setup","2D Touch and Mobile Input","2D: Input"],
+  "2D|Physics":["2D Ground Checks and Layer Masks","Collision layers and triggers (2D)","2D Physics Queries and Collision Filtering","Physics2D Query Reference","2D Physics Materials, Friction, and Bounciness","2D One-Way Platforms","2D Projectiles, Damage, and Hit Detection","2D Melee Attacks and Area Hitboxes","2D Joints and Rope Mechanics","2D: Physics"],
+  "2D|Gameplay":["2D Gameplay: Scene Changes, Pause, and Restart","2D Game State: Win, Lose, and Restart Flow","2D Checkpoints and Level Progression","2D Damage, Knockback, and Temporary Invulnerability","Health and damage system (2D)","2D Pickups and Respawning","Object pooling for 2D effects","2D Save and Load with JSON","2D Tilemaps, Sprite Import, and Collision","2D: Gameplay Systems"],
+  "2D|Camera":["2D Camera: Follow, Framing, and Pixel Art","2D Camera Bounds and Level Confinement","2D: Cameras"],
+  "2D|Cameras":["2D Camera Index"],
+  "2D|Animation":["2D Sprite Animation and Animator","2D Sprite Flipping and Aiming","2D: Animation"],
+  "2D|Tilemaps":["Tilemap Collision Workflow","2D: Tilemaps"],
+  "2D|UI":["2D HUD: Health, Text, and Layout","2D UI: Buttons, Main Menus, and Pause Menus","2D: UI"],
+  "2D|Systems":["2D Combat and Projectiles","2D Enemy AI: Patrol, Chase, Attack, Return","2D Inventory and ScriptableObject Items","2D Scene Flow, Pause, and JSON Save","2D UI, Audio, and Reusable Architecture"],
+  "2D|AI":["2D Enemy Patrol and Chase AI","2D: AI"],
+  "2D|Components":["2D Component Inspector Reference","Inspector Attributes and Serialization Reference","2D: Components"],
+  "2D|Rendering":["2D Rendering: Sorting Layers, Sprite Import, and Pixel Art","Pixel-art import settings","2D Parallax Background","2D: Rendering"],
+  "2D|Audio":["2D Audio: Music and Sound Effects","2D: Audio"],
+  "2D|Debugging":["Debugging, Testing, and Profiling"],
+  "2D|Optimization":["Performance and Object Pooling","2D: Optimization"],
+  "2D|Recipes":["2D Recipe: Camera Shake","2D Recipe: Viewport Bounds and Object Wrapping","2D: Recipes"],
+  "3D|Core Concepts":["Common Unity APIs: Quick Reference","3D Transforms and Essential Math","Vector Math Reference for 3D Games","3D Math and Quaternion Recipes","C# Events and Interfaces in Unity","Coroutines, Events, and Asynchronous Work","3D: Core Concepts"],
+  "3D|Movement":["3D CharacterController — Complete Setup","3D Camera-Relative Rigidbody Movement","3D Jumping and Ground Checks","3D Rigidbody Movement Patterns","3D Rigidbody Jump and Ground Check","CharacterController: Slopes, Steps, and Skin Width","First-person mouse look","3D: Movement"],
+  "3D|Input":["Unity Input System: 3D Setup","3D Mouse Cursor Lock and Sensitivity","Input System: Runtime Key Rebinding","3D: Input"],
+  "3D|Physics":["3D Physics: Rigidbody, Colliders, Layers, and Triggers","3D collision matrix and triggers","3D Rigidbody Forces and Movement","3D Raycast Interaction","3D Physics Query Reference","3D Projectiles and Hitscan Weapons","3D Joints and Rigidbody Constraints","3D: Physics"],
+  "3D|Camera":["3D Camera: First- and Third-Person Foundations","3D Third-Person Camera Collision and Smoothing","3D: Cameras"],
+  "3D|Cameras":["3D Camera Index"],
+  "3D|Gameplay":["3D Doors, Buttons, and Interaction","3D Camera Raycast Interaction Controller","3D Prefabs and Spawn Systems","3D Trigger Zones and Area Events","3D Game State: Win, Lose, and Restart Flow","3D Scene Transitions and Pause","3D Scene Loading: Synchronous vs Asynchronous","3D Cooldowns, Timers, and Temporary Effects","3D Health, Damage, and Death","Health and damage system (3D)","3D Pickups and Interactable Objects","3D Object Pooling","3D Inventory and Item Definitions","Save simple game data with JSON","Saving and Loading Small Amounts of Data","3D: Gameplay Systems"],
+  "3D|Animation":["3D Animator Blend Trees and Locomotion","Animator Parameters and Transitions","3D Animation: Root Motion vs Code-Driven Movement","3D Animation Events","3D: Animation"],
+  "3D|Rendering":["3D Rendering: Materials, Lighting, and URP","3D Rendering: Camera and Post-Processing Basics","3D Particle Systems and Trails","LOD and occlusion culling","3D: Rendering and Materials"],
+  "3D|Modeling and Materials":["Materials and Model Import Troubleshooting","3D Model Import Settings Reference","3D: Modeling and Materials"],
+  "3D|Lighting and Rendering":["3D Lighting and Rendering Index"],
+  "3D|UI":["3D UI: HUD and World-Space Labels","3D UI: Settings Menu and Audio Volume","Unity UI Toolkit vs uGUI: Choosing a UI System","3D: UI"],
+  "3D|Systems":["3D Combat and Projectiles","3D Enemy AI: Patrol, Chase, Attack, Return","3D Inventory and ScriptableObject Items","3D Scene Flow, Pause, and JSON Save","3D UI, Audio, and Reusable Architecture"],
+  "3D|AI":["3D AI: State Machines and NavMesh Basics","3D AI: Patrol and Target Detection","3D AI: Line of Sight and Aggro Range","3D: AI and Navigation"],
+  "3D|Components":["Common 3D Components: What to Inspect","3D Component Inspector Reference","3D: Components"],
+  "3D|Audio":["3D Spatial Audio","3D: Audio"],
+  "3D|Debugging":["3D Debugging and Profiling","3D: Debugging and Profiling"],
+  "3D|Optimization":["Build and Performance Checklist","Unity Memory and Asset Loading Basics","Unity Asset Loading: Direct References, Resources, and Addressables","Unity Test Framework: Quickstart","Version Control for Unity Projects","3D: Optimization and Project Quality"],
+  "3D|Networking":["Unity Networking and Multiplayer","Unity Multiplayer Architecture Overview"],
+  "3D|Recipes":["3D: Recipes"],
+  "Shared|Overview":["Unity C# Reference","README"]
  };
  const sourceOrder=new Map(DOCS.map((d,i)=>[d.path,i]));
+ const categoryRank=d=>{
+  const list=categoryOrder[d.scope]||[];
+  const i=list.indexOf(d.category);
+  return i<0?list.length:i;
+ };
+ const titleRank=d=>{
+  const order=usefulTitles[d.scope+"|"+d.category]||[];
+  const exact=order.indexOf(d.title);
+  if(exact>=0)return exact;
+  if(/\/README\.md$/i.test(d.path))return order.length+0.1;
+  return order.length+1+(sourceOrder.get(d.path)??0)/10000;
+ };
  return rows.sort((a,b)=>{
-  const special=d=>d.path==="README.md"?-3:d.path==="2D/README.md"?-2:d.path==="3D/README.md"?-1:0;
+  const special=d=>d.path==="README.md"?-1:0;
   const sa=special(a),sb=special(b);
   if(sa!==sb)return sa-sb;
-  return categoryRank(a)-categoryRank(b)
-    ||guideRank(a)-guideRank(b)
-    ||(sourceOrder.get(a.path)??0)-(sourceOrder.get(b.path)??0);
+  const scopeRank=d=>d.scope==="2D"?0:d.scope==="3D"?1:2;
+  return scopeRank(a)-scopeRank(b)
+    ||categoryRank(a)-categoryRank(b)
+    ||titleRank(a)-titleRank(b);
  });
 }
 function renderNav(){
